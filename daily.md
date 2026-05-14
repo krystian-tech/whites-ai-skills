@@ -4,7 +4,11 @@ argument-hint: "[opcjonalnie: dzisiaj / tydzien]"
 model: claude-opus-4-7
 ---
 
-Zrob przeglad otwartych spraw Krystiana Stefaniuka (PM, Agencja Whites) i przygotuj zwiezle podsumowanie co wymaga akcji.
+Zrob przeglad otwartych spraw osoby, ktora uruchomila ten skill, i przygotuj zwiezle podsumowanie co wymaga akcji.
+
+**Krok 0: Ustal kto pyta**
+
+Uzyj `slack_read_user_profile` z user_id aktualnie zalogowanego uzytkownika (dostepny jako aktualny uzytkownik MCP), zeby pobrac imie i nazwisko. Wszystkie dalsze kroki wykonuj dla tej osoby — nie dla autora skilla. Jezeli nie mozesz pobrac profilu, zapytaj: "Dla kogo mam zrobic daily? (podaj imie i nazwisko)"
 
 ## Krok 1: Slack Later — zapisane watki
 
