@@ -37,7 +37,9 @@ Dla kazdego znalezionego raportu sprawdz:
 
 **Terminowosc** — czy zostal dostarczony w ustalonym terminie?
 
-**Wyslanie do klienta** — sprawdz Slack (`slack_search_channels`, `slack_read_channel`) czy raport zostal wyslany/udostepniony klientowi
+**Wyslanie do klienta** — sprawdz rownoczesnie:
+- Slack (`slack_search_channels`, `slack_read_channel`) czy raport zostal wyslany/udostepniony klientowi
+- Gmail (`search_threads`) — szukaj maili z nazwa klienta i slowami "raport", "podsumowanie", "wyniki", "miesiac". Raporty czesto ida mailowo jako link do Looker Studio / Drive lub zalaczony PDF — to rownie wazny dowod wyslania co wiadomosc Slack. Sprawdz tez odpowiedzi klienta jako potwierdzenie odbioru.
 
 ## Krok 4: Sprawdz czy brakuje raportow
 
