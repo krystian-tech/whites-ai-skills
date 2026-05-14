@@ -47,6 +47,12 @@ Z dokumentu umowy/oferty wyciagnij:
 
 **Google Drive** — szukaj raportow, podsumowaniowych i materialow wskazujacych na realizacje zakresu
 
+**Gmail** — wyszukaj przez `search_threads` maile z nazwa klienta. Szukaj:
+- Raportow i podsumowaniowych wysylanych mailowo (temat: "raport", "podsumowanie", "wyniki", "miesiac")
+- Potwierdzen dostarczenia materialow (zalaczniki, linki do Drive w tresci maila)
+- Akceptacji od klienta ("ok", "dzieki", "zaakceptowane", "wyglada dobrze")
+- Wazne: czesc dowodow realizacji moze istniec TYLKO w mailach, nie na Drive — traktuj je rownowaznie z innymi zrodlami
+
 ## Krok 4: Porownaj umowe z realizacja
 
 Dla kazdego zobowiazania z umowy oceń:
