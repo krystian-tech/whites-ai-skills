@@ -73,6 +73,7 @@ Jezeli uzytkownik chce wyslac:
 - Uzyj `slack_send_message` z ID kanalu lub DM do osoby
 - Przed wyslaniem pokaz jeszcze raz tresc i popros o potwierdzenie: "Wyslac te wiadomosc do @imie? (tak/nie)"
 - Wyslij po potwierdzeniu
+- **WAZNE:** Oznaczenia osob w wiadomosci MUSZA byc w formacie `<@USER_ID>` (np. `<@UB2BJH2JG>`), nie jako plain text `@imie`. Tylko ten format tworzy klikalne, interaktywne oznaczenie w Slacku ktore powiadamia osobe. Przed wyslaniem znajdz user ID przez `slack_search_users` lub z historii kanalow.
 
 ## WAZNE zasady:
 
