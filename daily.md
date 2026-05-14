@@ -8,12 +8,17 @@ Zrob przeglad otwartych spraw Krystiana Stefaniuka (PM, Agencja Whites) i przygo
 
 ## Krok 1: Slack Later — zapisane watki
 
-Wyszukaj zapisane/oznaczone watki uzywajac `slack_search_public_and_private` z zapytaniem `is:saved`.
+Slack ma dwie oddzielne funkcje zapisu — sprawdz OBA zrodla rownoczegle:
+
+1. `slack_search_public_and_private` z zapytaniem `in:later` — zakładka "Later" (nowszy Slack)
+2. `slack_search_public_and_private` z zapytaniem `is:saved` — zapisane/oznaczone elementy (starszy mechanizm)
 
 Dla kazdego znalezionego watku uzyj `slack_read_thread` zeby zrozumiec kontekst:
 - O co chodzi w tym watku?
 - Co wisi bez akcji?
 - Kto ma cos zrobic — Krystian czy specjalista?
+
+Jezeli oba zapytania zwroca te same wyniki — deduplikuj. Jezeli `in:later` zwroci blad lub 0 wynikow — polegaj na `is:saved`.
 
 ## Krok 2: Wzmianki bez follow-upu
 
