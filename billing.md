@@ -33,6 +33,12 @@ Szukaj plikow potwierdzajacych wykonanie pracy (raporty, gotowe materialy, wynik
 - Wiadomosci o zakonczeniu prac ("gotowe", "wyslane", "opublikowane", "zaakceptowane")
 - Ewentualnych zmian zakresu w trakcie miesiac
 
+**Gmail** — wyszukaj przez `search_threads` maile z nazwa klienta. Szukaj:
+- Wyslanych materialow jako zalaczniki lub linki (raporty, prezentacje, pliki)
+- Akceptacji klienta ("ok", "dzieki", "zaakceptowane", "wyglada dobrze", "mozecie fakturowac")
+- Potwierdzen ustalen dotyczacych zakresu lub zmian
+- Wazne: czesc dowodow dostarczenia pracy moze istniec TYLKO w mailach — traktuj je rownowaznie z Drive i Slackiem, nie oznaczaj elementu jako brak realizacji jesli nie sprawdziles maila
+
 **BlueDot** — wyszukaj spotkania (`search_meetings`). Sprawdz action items i notatki pod katem:
 - Dodatkowych prac nieuwzglednionych w umowie
 - Ustalonych zmian zakresu
