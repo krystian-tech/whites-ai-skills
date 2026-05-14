@@ -81,5 +81,5 @@ Jezeli uzytkownik chce wyslac:
 - Jezeli task nie ma przypisanej osoby — pomijaj go
 - Jezeli specjalista dal odpowiedz w ciagu 48h — nie generuj dla niego przypomnienia
 - Jezeli jest wiecej niz 3 taski dla jednej osoby — skompresuj do najwazniejszych 2-3
-- Nie generuj reminderow do PM-a (Krystiana) — tylko do specjalistow wykonawczych
+- Nie generuj reminderow do PM-a ktory uruchomil skill — tylko do specjalistow wykonawczych
 - Jezeli klient ma malo danych (< 3 tasków z przypisanymi osobami) — poinformuj i zapytaj czy kontynuowac

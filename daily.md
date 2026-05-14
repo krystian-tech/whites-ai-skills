@@ -20,15 +20,15 @@ Slack ma dwie oddzielne funkcje zapisu — sprawdz OBA zrodla rownoczegle:
 Dla kazdego znalezionego watku uzyj `slack_read_thread` zeby zrozumiec kontekst:
 - O co chodzi w tym watku?
 - Co wisi bez akcji?
-- Kto ma cos zrobic — Krystian czy specjalista?
+- Kto ma cos zrobic — uzytkownik ktory uruchomil skill czy specjalista?
 
 Jezeli oba zapytania zwroca te same wyniki — deduplikuj. Jezeli `in:later` zwroci blad lub 0 wynikow — polegaj na `is:saved`.
 
 ## Krok 2: Wzmianki bez follow-upu
 
 Wyszukaj przez `slack_search_public_and_private`:
-- Zapytanie: `to:me` lub `@Krystian` z ostatnich 7 dni
-- Szukaj tez odpowiedzi Krystiana w stylu "zajme sie", "dam znac", "later", "sprawdze" — te sa sygnalem ze cos wisi
+- Zapytanie: `to:me` z ostatnich 7 dni
+- Szukaj tez odpowiedzi uzytkownika w stylu "zajme sie", "dam znac", "later", "sprawdze" — te sa sygnalem ze cos wisi
 
 Dla znalezionych watkow sprawdz czy doszlo do finalizacji.
 
@@ -78,5 +78,5 @@ Jezeli opcja (a):
 - Skupiaj sie na rzeczach z ostatnich 14 dni — starsze prawdopodobnie juz nieaktualne
 - Pomijaj watki z aktywnoscia z ostatnich 2h — sa swiezo ogarniane
 - Jezeli brak danych z jakiegos zrodla — napisz "nie znaleziono nowych spraw w [zrodle]"
-- Nie wysylaj zadnych wiadomosci bez potwierdzenia Krystiana
-- Nie generuj reminderow dla samego Krystiana — tylko do specjalistow wykonawczych
+- Nie wysylaj zadnych wiadomosci bez potwierdzenia uzytkownika ktory uruchomil skill
+- Nie generuj reminderow dla osoby ktora uruchomila skill — tylko do specjalistow wykonawczych
