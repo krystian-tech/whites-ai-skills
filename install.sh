@@ -6,6 +6,7 @@ SKILLS=(
   "billing.md"
   "contract-check.md"
   "daily.md"
+  "onepager.md"
   "reminder.md"
   "report-check.md"
   "roadmapa.md"
@@ -23,4 +24,4 @@ done
 
 echo ""
 echo "Gotowe! Zrestartuj Claude Code żeby skille były aktywne."
-echo "Dostępne komendy: /billing /contract-check /daily /reminder /report-check /roadmapa /strategy-check"
+echo "Dostępne komendy: /billing /contract-check /daily /onepager /reminder /report-check /roadmapa /strategy-check"
