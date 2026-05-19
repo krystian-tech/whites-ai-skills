@@ -11,6 +11,7 @@ SKILLS=(
   "report-check.md"
   "roadmapa.md"
   "strategy-check.md"
+  "update-skills.md"
 )
 
 mkdir -p "$DEST"
@@ -24,4 +25,4 @@ done
 
 echo ""
 echo "Gotowe! Zrestartuj Claude Code żeby skille były aktywne."
-echo "Dostępne komendy: /billing /contract-check /daily /onepager /reminder /report-check /roadmapa /strategy-check"
+echo "Dostępne komendy: /billing /contract-check /daily /onepager /reminder /report-check /roadmapa /strategy-check /update-skills"

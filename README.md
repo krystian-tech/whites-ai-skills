@@ -59,6 +59,12 @@ Generuje HTML brief projektu i publikuje go na GitHub Pages.
 ```
 /onepager RS Components
 ```
+
+### `/update-skills`
+Pobiera najnowsze wersje wszystkich skilli z GitHub.
+```
+/update-skills
+```
 Wynikowy URL: `https://krystian-tech.github.io/whites-ai-skills/briefs/[nazwa-klienta].html`
 
 Wszystkie briefy: `https://krystian-tech.github.io/whites-ai-skills/`
