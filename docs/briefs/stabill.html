@@ -15,6 +15,12 @@
     .badge { background: #e53935; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
     .budget { color: #fff; font-size: 20px; font-weight: 700; }
     .budget span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .budget-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+    .budget-table th { text-align: left; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 8px 8px 0; font-size: 10px; }
+    .budget-table td { padding: 5px 8px 5px 0; border-top: 1px solid #f0f0f0; color: #444; }
+    .budget-table td:last-child { font-weight: 600; color: #1a1a2e; text-align: right; }
+    .budget-table tr.total td { border-top: 2px solid #e0e0e0; font-weight: 700; color: #1a1a2e; font-size: 13px; }
+    .budget-table tr.highlight td { background: #f0fdf4; }
     .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
     .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
@@ -66,7 +72,7 @@
     </div>
     <div class="header-right">
       <span class="badge">ONGOING</span>
-      <div class="budget">do ustalenia <span>netto/mies.</span></div>
+      <div class="budget">25 750 zł <span>netto/mies. (regular)</span></div>
     </div>
   </div>
 
@@ -79,6 +85,24 @@
       <div class="meta-item"><div class="label">Cel</div><div class="value">Rozpoznawalność marki + leady dla wykonawców</div></div>
       <div class="meta-item"><div class="label">Target</div><div class="value">Wykonawcy budowlani + inwestorzy</div></div>
       <div class="meta-item"><div class="label">Branża</div><div class="value">Materiały budowlane (gładzie, grunty, farby)</div></div>
+      <div class="meta-item" style="width:100%;margin-top:16px;">
+        <div class="label">Budżet — harmonogram do końca 2026</div>
+        <table class="budget-table" style="margin-top:10px;max-width:560px;">
+          <thead><tr><th>Miesiąc</th><th>Co się dzieje</th><th>Kwota netto</th></tr></thead>
+          <tbody>
+            <tr><td>Kwiecień 2026</td><td>Setup analityki + strategia</td><td>19 850 zł</td></tr>
+            <tr class="highlight"><td>Maj 2026</td><td>Launch + Video Content Creation (24 500 zł jednorazowo)</td><td>50 250 zł</td></tr>
+            <tr><td>Czerwiec 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Lipiec 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Sierpień 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Wrzesień 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Październik 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Listopad 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr><td>Grudzień 2026</td><td>Regular</td><td>25 750 zł</td></tr>
+            <tr class="total"><td colspan="2">SUMA (9 miesięcy)</td><td>250 350 zł</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
