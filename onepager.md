@@ -6,8 +6,9 @@ model: claude-opus-4-7
 
 Wygeneruj one-pager projektowy dla klienta: **$ARGUMENTS**
 
-Repo lokalne: `$HOME/Documents/GitHub/whites-ai-skills/`
 GitHub Pages URL bazy: `https://krystian-tech.github.io/whites-ai-skills/briefs/`
+GitHub repo: `krystian-tech/whites-ai-skills`
+Wymagana zmienna środowiskowa: `$GITHUB_TOKEN`
 
 ---
 
@@ -185,51 +186,80 @@ Nazwa pliku: `[nazwa-klienta-lowercase-bez-spacji].html` (np. `rs-components.htm
 
 ---
 
-## Krok 4: Zapisz plik
+## Krok 4: Sprawdź token
 
-Zapisz wygenerowany HTML do:
-`$HOME/Documents/GitHub/whites-ai-skills/docs/briefs/[nazwa-klienta].html`
+Przed publikacją sprawdź czy `$GITHUB_TOKEN` jest dostępny:
 
----
-
-## Krok 5: Zaktualizuj index.html
-
-Odczytaj `$HOME/Documents/GitHub/whites-ai-skills/docs/index.html`.
-Dodaj nowy brief do listy projektów (sekcja `<ul id="briefs-list">`):
-```html
-<li><a href="briefs/[nazwa-klienta].html">[NAZWA KLIENTA]</a> — [TYP USŁUG] · aktualizacja: [MIESIAC ROK]</li>
+```bash
+[ -z "$GITHUB_TOKEN" ] && echo "BRAK GITHUB_TOKEN" || echo "Token OK"
 ```
-Zapisz plik.
+
+Jeśli BRAK — zatrzymaj się i poinformuj użytkownika:
+> ❌ Brak zmiennej `GITHUB_TOKEN`. Poproś Krystiana o token i dodaj go przez `/update-config` → "dodaj zmienną środowiskową GITHUB_TOKEN=<token>". Następnie zrestartuj Claude Code.
 
 ---
 
-## Krok 6: Opublikuj na GitHub Pages
+## Krok 5: Zapisz HTML do pliku tymczasowego
+
+Zapisz wygenerowany HTML do `/tmp/[nazwa-klienta].html`.
+
+---
+
+## Krok 6: Opublikuj brief przez GitHub API
 
 Wykonaj sekwencyjnie:
 
 ```bash
-[ ! -d "$HOME/Documents/GitHub/whites-ai-skills" ] && git clone git@github.com:krystian-tech/whites-ai-skills.git "$HOME/Documents/GitHub/whites-ai-skills"
-cd "$HOME/Documents/GitHub/whites-ai-skills"
-git add docs/briefs/[nazwa-klienta].html docs/index.html
-git commit -m "onepager: dodaj brief [NAZWA KLIENTA]"
-git push origin main
+# Pobierz SHA jeśli plik już istnieje
+BRIEF_SHA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+  "https://api.github.com/repos/krystian-tech/whites-ai-skills/contents/docs/briefs/[nazwa-klienta].html" \
+  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null)
+
+# Zakoduj plik
+BRIEF_CONTENT=$(base64 /tmp/[nazwa-klienta].html | tr -d '\n')
+
+# Zbuduj payload
+if [ -n "$BRIEF_SHA" ]; then
+  PAYLOAD="{\"message\":\"onepager: aktualizuj brief [NAZWA KLIENTA]\",\"content\":\"$BRIEF_CONTENT\",\"sha\":\"$BRIEF_SHA\"}"
+else
+  PAYLOAD="{\"message\":\"onepager: dodaj brief [NAZWA KLIENTA]\",\"content\":\"$BRIEF_CONTENT\"}"
+fi
+
+# Push
+curl -s -X PUT \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "$PAYLOAD" \
+  "https://api.github.com/repos/krystian-tech/whites-ai-skills/contents/docs/briefs/[nazwa-klienta].html"
 ```
-
-Po pushu podaj użytkownikowi URL:
-`https://krystian-tech.github.io/whites-ai-skills/briefs/[nazwa-klienta].html`
-
-Poinformuj że GitHub Pages może potrzebować 1-2 minut na odświeżenie po pierwszym pushu.
 
 ---
 
-## Krok 7: Fallback — Google Sites
+## Krok 7: Zaktualizuj index.html przez GitHub API
 
-Jeśli push się nie powiedzie LUB użytkownik poprosi o instrukcję dla Google Sites, wyświetl:
+```bash
+# Pobierz aktualny index.html
+INDEX_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+  "https://api.github.com/repos/krystian-tech/whites-ai-skills/contents/docs/index.html")
+INDEX_SHA=$(echo "$INDEX_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['sha'])")
 
-> **Jak wrzucić na Google Sites:**
-> 1. Otwórz stronę w przeglądarce: `open [ścieżka do pliku]`
-> 2. Prawy klik → **Pokaż źródło strony** → zaznacz wszystko (Cmd+A) → kopiuj (Cmd+C)
-> 3. W Google Sites: **Wstaw → Osadź → Embed code** → wklej → OK
+# Zdekoduj, dodaj wpis, zakoduj z powrotem
+echo "$INDEX_RESPONSE" | python3 -c "import sys,json,base64; print(base64.b64decode(json.load(sys.stdin)['content']).decode())" > /tmp/index.html
+sed -i '' 's|</ul>|  <li><a href="briefs/[nazwa-klienta].html">[NAZWA KLIENTA]</a> — [TYP USŁUG] · aktualizacja: [MIESIAC ROK]</li>\n</ul>|' /tmp/index.html
+INDEX_CONTENT=$(base64 /tmp/index.html | tr -d '\n')
+
+# Push
+curl -s -X PUT \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"message\":\"onepager: aktualizuj index - [NAZWA KLIENTA]\",\"content\":\"$INDEX_CONTENT\",\"sha\":\"$INDEX_SHA\"}" \
+  "https://api.github.com/repos/krystian-tech/whites-ai-skills/contents/docs/index.html"
+```
+
+Po udanym pushu podaj użytkownikowi URL:
+`https://krystian-tech.github.io/whites-ai-skills/briefs/[nazwa-klienta].html`
+
+Poinformuj że GitHub Pages może potrzebować 1-2 minut na odświeżenie.
 
 ---
 
