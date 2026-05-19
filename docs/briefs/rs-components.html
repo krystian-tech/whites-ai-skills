@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RS Components — Brief Projektu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f5f7;
+      color: #2c2c2c;
+      padding: 32px 16px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header {
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-left h1 {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .header-left p {
+      color: #a0a8c0;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .badge {
+      background: #e53935;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .budget {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .budget span {
+      font-size: 13px;
+      color: #a0a8c0;
+      font-weight: 400;
+    }
+
+    /* SECTION */
+    .section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    /* PROCESSES */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .process-card {
+      border-radius: 8px;
+      padding: 16px;
+      border-left: 4px solid;
+    }
+
+    .process-card.p1 { background: #eef4ff; border-color: #3b82f6; }
+    .process-card.p2 { background: #f0fdf4; border-color: #22c55e; }
+    .process-card.p3 { background: #fff7ed; border-color: #f97316; }
+
+    .process-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .process-card .subtitle {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .process-card ul {
+      padding-left: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .process-card .norm {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      background: rgba(0,0,0,0.05);
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    /* TEAM */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .team-card {
+      background: #f8f9fb;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .team-card .role {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+
+    .team-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+
+    .team-card .side {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* CONTACTS */
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .contact-row:last-child { border-bottom: none; }
+
+    .contact-avatar {
+      width: 36px;
+      height: 36px;
+      background: #1a1a2e;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .contact-info .cname {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .contact-info .crole {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .contact-info .cemail {
+      font-size: 11px;
+      color: #3b82f6;
+      margin-top: 2px;
+    }
+
+    /* ALERTS */
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok   { background: #f0fdf4; color: #166534; }
+
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+    /* LINKS */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8f9fb;
+      border-radius: 7px;
+      padding: 10px 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+
+    .link-item:hover { background: #eef4ff; }
+
+    .link-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc  { font-size: 11px; color: #888; }
+
+    /* META */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .meta-item { font-size: 13px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>RS Components</h1>
+      <p>SEO + Content Marketing — Brief Projektu</p>
+    </div>
+    <div class="header-right">
+      <span class="badge">ONGOING</span>
+      <div class="budget">8 000 PLN <span>netto/mies.</span></div>
+    </div>
+  </div>
+
+  <!-- META -->
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="label">Umowa od</div>
+        <div class="value">14 lipca 2025</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Czas trwania</div>
+        <div class="value">1 rok</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">PM Whites</div>
+        <div class="value">Krystian Stefaniuk</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">CMS</div>
+        <div class="value">Contentful</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Link building</div>
+        <div class="value">666 GBP/mies. — do ustalenia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESY -->
+  <div class="section">
+    <div class="section-title">Zakres prac — 3 procesy</div>
+    <div class="process-grid">
+
+      <div class="process-card p1">
+        <h3>PROCES 1 — CCO</h3>
+        <div class="subtitle">Optymalizacja opisów kategorii</div>
+        <ul>
+          <li>Whites typuje URLe (SEO + lista Dominiki)</li>
+          <li>Bartek pisze opisy kategorii</li>
+          <li>Wdrożenie do Contentful</li>
+        </ul>
+        <div class="norm">20 opisów / miesiąc</div>
+      </div>
+
+      <div class="process-card p2">
+        <h3>PROCES 2 — Artykuły</h3>
+        <div class="subtitle">Długie teksty Discovery Portal</div>
+        <ul>
+          <li>Whites proponuje tematy</li>
+          <li>Dominika akceptuje/odrzuca</li>
+          <li>Bartek pisze, wdrożenie do Contentful</li>
+        </ul>
+        <div class="norm">4 teksty / miesiąc · do 15 000 zzs</div>
+      </div>
+
+      <div class="process-card p3">
+        <h3>PROCES 3 — Tłumaczenia</h3>
+        <div class="subtitle">Teksty z UK Discovery Portal</div>
+        <ul>
+          <li>Whites rekomenduje co tłumaczyć (SEO)</li>
+          <li>RS tłumaczy</li>
+          <li>Whites optymalizuje + wdraża do CMS</li>
+        </ul>
+        <div class="norm">Bez stałej normy — wg priorytetów klienta</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="section">
+    <div class="section-title">Zespół</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">PM</div>
+        <div class="name">Krystian Stefaniuk</div>
+        <div class="side">Whites (od maja 2026)</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Content / CMS</div>
+        <div class="name">Bartek Wójcik</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">SEO</div>
+        <div class="name">Rafał Kobylarczyk</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Główny kontakt</div>
+        <div class="name">Dominika Kotowicz</div>
+        <div class="side">RS Components (klient)</div>
+      </div>
+      <div class="team-card">
+        <div class="role">SEO Manager EMEA</div>
+        <div class="name">Ken Berkley</div>
+        <div class="side">RS Components (klient)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKTY -->
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+    <div class="contact-row">
+      <div class="contact-avatar">DK</div>
+      <div class="contact-info">
+        <div class="cname">Dominika Kotowicz</div>
+        <div class="crole">Digital Marketing Manager EE — główny kontakt operacyjny</div>
+        <div class="cemail">dominika.kotowicz@rsgroup.com</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">KB</div>
+      <div class="contact-info">
+        <div class="cname">Ken Berkley</div>
+        <div class="crole">SEO Manager RoEMEA — dostępy, GSC, cross-check URLi</div>
+        <div class="cemail">Kenneth.Berkley@rsgroup.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTWARTE SPRAWY -->
+  <div class="section">
+    <div class="section-title">Otwarte sprawy</div>
+    <div class="alerts">
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Brak briefów CCO za kwiecień i maj 2026</strong> — PROCES 1 zaległy o 2 miesiące</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Cross-check URLi</strong> — Ken wysłał listę priorytetowych URLi (14.05), Rafał + Bartek mają zderzić z trackerem</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Komunikacja przez tracker</strong> — Dominika nie wie co jest gotowe do publikacji. Ustalić nowy sposób oznaczania statusu</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Brak raportów miesięcznych SEO</strong> — do wdrożenia od razu</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>P3 priorytety Q2/Q3</strong> — czekamy na Dominikę (jakie obszary tematyczne chcą pokrywać)</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Link building</strong> — Dominika chce 2–4 linki/mies., budżet 666 GBP bardzo niski. Temat do renegocjacji</span>
+      </div>
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>GSC</strong> — Ken przesłał eksport danych (6 mies.), pełny dostęp w toku. Rafał może już zacząć analizę</span>
+      </div>
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Contentful</strong> — Bartek zalogowany (12.05), 2FA skonfigurowane</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKI -->
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1JWH6tmWFOCs4gcoF52Pz_Jl5Dm5Sts_bzVmlvh0ZhHU/edit" target="_blank">
+        <div class="link-icon">📊</div>
+        <div>
+          <div class="link-label">Główny Tracker</div>
+          <div class="link-desc">PROCES1 / PROCES2 / PROCES3</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://app.contentful.com/spaces/7ps1g1as0zqv" target="_blank">
+        <div class="link-icon">🗂</div>
+        <div>
+          <div class="link-label">Contentful P1</div>
+          <div class="link-desc">Space: 7ps1g1as0zqv</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://app.contentful.com/spaces/gauf0pneg5gv" target="_blank">
+        <div class="link-icon">🗂</div>
+        <div>
+          <div class="link-label">Contentful P2/P3</div>
+          <div class="link-desc">Space: gauf0pneg5gv</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">Ostatnia aktualizacja: maj 2026 · Whites Agency</div>
+
+</div>
+</body>
+</html>
