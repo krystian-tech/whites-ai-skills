@@ -6,7 +6,7 @@ model: claude-opus-4-7
 
 Wygeneruj one-pager projektowy dla klienta: **$ARGUMENTS**
 
-Repo lokalne: `/Users/krystianstefaniuk/Documents/GitHub/whites-ai-skills/`
+Repo lokalne: `$HOME/Documents/GitHub/whites-ai-skills/`
 GitHub Pages URL bazy: `https://krystian-tech.github.io/whites-ai-skills/briefs/`
 
 ---
@@ -188,13 +188,13 @@ Nazwa pliku: `[nazwa-klienta-lowercase-bez-spacji].html` (np. `rs-components.htm
 ## Krok 4: Zapisz plik
 
 Zapisz wygenerowany HTML do:
-`/Users/krystianstefaniuk/Documents/GitHub/whites-ai-skills/docs/briefs/[nazwa-klienta].html`
+`$HOME/Documents/GitHub/whites-ai-skills/docs/briefs/[nazwa-klienta].html`
 
 ---
 
 ## Krok 5: Zaktualizuj index.html
 
-Odczytaj `/Users/krystianstefaniuk/Documents/GitHub/whites-ai-skills/docs/index.html`.
+Odczytaj `$HOME/Documents/GitHub/whites-ai-skills/docs/index.html`.
 Dodaj nowy brief do listy projektów (sekcja `<ul id="briefs-list">`):
 ```html
 <li><a href="briefs/[nazwa-klienta].html">[NAZWA KLIENTA]</a> — [TYP USŁUG] · aktualizacja: [MIESIAC ROK]</li>
@@ -208,7 +208,8 @@ Zapisz plik.
 Wykonaj sekwencyjnie:
 
 ```bash
-cd /Users/krystianstefaniuk/Documents/GitHub/whites-ai-skills
+[ ! -d "$HOME/Documents/GitHub/whites-ai-skills" ] && git clone git@github.com:krystian-tech/whites-ai-skills.git "$HOME/Documents/GitHub/whites-ai-skills"
+cd "$HOME/Documents/GitHub/whites-ai-skills"
 git add docs/briefs/[nazwa-klienta].html docs/index.html
 git commit -m "onepager: dodaj brief [NAZWA KLIENTA]"
 git push origin main
