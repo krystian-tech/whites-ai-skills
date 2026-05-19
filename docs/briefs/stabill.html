@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stabill — Brief Projektu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #2c2c2c; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { background: #1a1a2e; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 700; }
+    .header-left p { color: #a0a8c0; font-size: 13px; margin-top: 4px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .badge { background: #e53935; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .budget { color: #fff; font-size: 20px; font-weight: 700; }
+    .budget span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .process-card { border-radius: 8px; padding: 16px; border-left: 4px solid; }
+    .process-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .process-card .subtitle { font-size: 11px; color: #888; margin-bottom: 10px; }
+    .process-card ul { padding-left: 16px; font-size: 13px; line-height: 1.7; color: #444; }
+    .process-card .norm { margin-top: 10px; font-size: 12px; font-weight: 600; color: #555; background: rgba(0,0,0,0.05); display: inline-block; padding: 3px 8px; border-radius: 4px; }
+    .color-1 { background: #eef4ff; border-color: #3b82f6; }
+    .color-2 { background: #f0fdf4; border-color: #22c55e; }
+    .color-3 { background: #fff7ed; border-color: #f97316; }
+    .color-4 { background: #fdf4ff; border-color: #a855f7; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .team-card { background: #f8f9fb; border-radius: 8px; padding: 12px 14px; }
+    .team-card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 4px; }
+    .team-card .name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+    .team-card .side { font-size: 11px; color: #888; margin-top: 2px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-avatar { width: 36px; height: 36px; background: #1a1a2e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .contact-info .cname { font-size: 13px; font-weight: 600; }
+    .contact-info .crole { font-size: 12px; color: #888; }
+    .contact-info .cemail { font-size: 11px; color: #3b82f6; margin-top: 2px; }
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+    .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; }
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok { background: #f0fdf4; color: #166534; }
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .link-item { display: flex; align-items: center; gap: 10px; background: #f8f9fb; border-radius: 7px; padding: 10px 12px; text-decoration: none; color: inherit; }
+    .link-item:hover { background: #eef4ff; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc { font-size: 11px; color: #888; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; font-size: 13px; }
+    .footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Stabill (Piotrowice)</h1>
+      <p>Social Media + Performance + Kreacja + Video — Brief Projektu</p>
+    </div>
+    <div class="header-right">
+      <span class="badge">ONGOING</span>
+      <div class="budget">do ustalenia <span>netto/mies.</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Umowa od</div><div class="value">26 marca 2026</div></div>
+      <div class="meta-item"><div class="label">Ongoing start</div><div class="value">Maj 2026</div></div>
+      <div class="meta-item"><div class="label">PM</div><div class="value">Krystian Stefaniuk</div></div>
+      <div class="meta-item"><div class="label">Cel</div><div class="value">Rozpoznawalność marki + leady dla wykonawców</div></div>
+      <div class="meta-item"><div class="label">Target</div><div class="value">Wykonawcy budowlani + inwestorzy</div></div>
+      <div class="meta-item"><div class="label">Branża</div><div class="value">Materiały budowlane (gładzie, grunty, farby)</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zakres prac</div>
+    <div class="process-grid">
+
+      <div class="process-card color-1">
+        <h3>Social Media Organic</h3>
+        <div class="subtitle">Facebook — Piotr Stokłosiński</div>
+        <ul>
+          <li>Tworzenie postów organicznych</li>
+          <li>Copywriting i kreacja wizualna</li>
+          <li>Cykle: "Misiek" (maskotka), "Stabill podpowiada" (edu), produktowe</li>
+          <li>Community management (Agata, Beata, Mateusz)</li>
+        </ul>
+        <span class="norm">12 publikacji / mies. (6 grafik, 3 animacje, 3 karuzele)</span>
+      </div>
+
+      <div class="process-card color-2">
+        <h3>Paid Media</h3>
+        <div class="subtitle">Meta + Google — Katarzyna Połeć</div>
+        <ul>
+          <li>Meta Lead Ads — darmowe próbki produktów dla wykonawców</li>
+          <li>Google Ads (demand gen, kampanie zasięgowe)</li>
+          <li>Targeting: wykonawcy + inwestorzy budowlani</li>
+          <li>Produkty w kampanii: PM-50, PM-65, PG-41, PKG-28</li>
+        </ul>
+        <span class="norm">12 kreacji / mies. (wspólne z organik)</span>
+      </div>
+
+      <div class="process-card color-3">
+        <h3>Kreacja / Grafika</h3>
+        <div class="subtitle">Kreacja wizualna — Mery</div>
+        <ul>
+          <li>Grafiki do postów organicznych</li>
+          <li>Kreacje reklamowe (Meta + Google)</li>
+          <li>Grafika na stronę z formularzem zamówień próbek</li>
+          <li>KV marki — motyw przewodni: animowany misiek</li>
+        </ul>
+      </div>
+
+      <div class="process-card color-4">
+        <h3>Video Content Creation</h3>
+        <div class="subtitle">Nagrania w Piotrowicach — Filip Kulisz + Piotr</div>
+        <ul>
+          <li>Jednodniowa sesja nagraniowa u klienta</li>
+          <li>Przygotowanie scenariuszy (konspekty do akceptu)</li>
+          <li>Nagranie i montaż materiałów wideo</li>
+          <li>6 rolek do 1 minuty + surówki dla klienta</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zespół Whites</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">Project Manager</div>
+        <div class="name">Krystian Stefaniuk</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Strategy / Social Director</div>
+        <div class="name">Filip Kulisz</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Social Media</div>
+        <div class="name">Piotr Stokłosiński</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Performance</div>
+        <div class="name">Katarzyna Połeć</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Grafika / Kreacja</div>
+        <div class="name">Mery</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Analytics</div>
+        <div class="name">Kinga Żukowska-Janusz</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Community Management</div>
+        <div class="name">Agata Masio</div>
+        <div class="side">+ Beata Lisiewicz, Mateusz Pastor</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+    <div class="contact-row">
+      <div class="contact-avatar">BK</div>
+      <div class="contact-info">
+        <div class="cname">Barbara Kempa</div>
+        <div class="crole">Marketing — główny kontakt (pani Basia)</div>
+        <div class="cemail">barbara.kempa@piotrowice.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">MK</div>
+      <div class="contact-info">
+        <div class="cname">Małgorzata Kulińska</div>
+        <div class="crole">Marketing</div>
+        <div class="cemail">malgorzata.kulinska@piotrowice.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">JP</div>
+      <div class="contact-info">
+        <div class="cname">Jarosław Pacierz</div>
+        <div class="crole">Product Manager (gładzie i produkty)</div>
+        <div class="cemail">jaroslaw.pacierz@piotrowice.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">MP</div>
+      <div class="contact-info">
+        <div class="cname">Michał Paluch</div>
+        <div class="crole">IT / Developer strony stabill.pl</div>
+        <div class="cemail">michal.paluch@piotrowice.pl</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Otwarte sprawy</div>
+    <div class="alerts">
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Grafika przy formularzu (blocker kampanii)</strong> — Michał Paluch nie potwierdził rozmiaru i formatu grafiki przy stronie z formularzem. Do momentu zamknięcia tego tematu kampanie perfo nie mogą wystartować. Krystian wyjaśnia na bieżąco.</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Video sesja nagraniowa — brak terminu</strong> — Filip poprosił o ustalenie terminu i dostępności eksperta (p. Jarosław) w Piotrowicach. Krystian inicjuje temat z p. Basią. Tematy do nagrania muszą być zatwierdzone przez klienta.</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Tematy na czerwiec od klienta</strong> — Piotr potrzebuje zatwierdzonej listy tematów na czerwiec (18.05). P. Basia nie odpowiada. Do podbicia na statusie.</div>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <div><strong>GA4 + GTM + GSC w konfiguracji</strong> — Kinga Żukowska-Janusz konfiguruje analitykę. Dostępy nadane, GTM zaproszenie wysłane. Google Ads ID: 162-164-4242.</div>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <div><strong>Strategia zatwierdzona</strong> — Prezentacja strategii zaakceptowana przez klienta 8 maja 2026. Pierwsze posty organiczne uruchomione.</div>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <div><strong>Moderacja uruchomiona</strong> — Piotr Stokłosiński wprowadził Agatę Masio, Beatę Lisiewicz i Mateusza Pastora. Wątek mailowy z Jarosławem Pacierzem aktywny od 5 maja 2026.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+      <a href="https://drive.google.com/drive/folders/1ifCs_jXDiOJ1t4zaDo8-jlPeLVkP_D4T" target="_blank" class="link-item">
+        <div class="link-icon">D</div>
+        <div>
+          <div class="link-label">Drive wewnętrzny</div>
+          <div class="link-desc">Packshoty, katalog, materiały klienta</div>
+        </div>
+      </a>
+      <a href="https://stabill.pl" target="_blank" class="link-item">
+        <div class="link-icon">W</div>
+        <div>
+          <div class="link-label">stabill.pl</div>
+          <div class="link-desc">Strona klienta + formularz próbek</div>
+        </div>
+      </a>
+      <a href="https://www.facebook.com/stabillpl" target="_blank" class="link-item">
+        <div class="link-icon">F</div>
+        <div>
+          <div class="link-label">Facebook Stabill</div>
+          <div class="link-desc">Profil marki — organic + paid</div>
+        </div>
+      </a>
+      <a href="https://docs.google.com/presentation/d/1XThSeE01-OlLi4DI9einRZ-EXz4C8YLeJaESSzYSfHs/" target="_blank" class="link-item">
+        <div class="link-icon">S</div>
+        <div>
+          <div class="link-label">Strategia komunikacji</div>
+          <div class="link-desc">Prezentacja — zatwierdzona 08.05.2026</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">Ostatnia aktualizacja: Maj 2026 · Whites Agency</div>
+
+</div>
+</body>
+</html>
