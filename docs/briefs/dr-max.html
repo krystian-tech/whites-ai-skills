@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr.Max — Brief Projektu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #2c2c2c; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { background: #1a1a2e; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 700; }
+    .header-left p { color: #a0a8c0; font-size: 13px; margin-top: 4px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .badge { background: #e53935; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .budget { color: #fff; font-size: 20px; font-weight: 700; }
+    .budget span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .process-card { border-radius: 8px; padding: 16px; border-left: 4px solid; }
+    .process-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .process-card .subtitle { font-size: 11px; color: #888; margin-bottom: 10px; }
+    .process-card ul { padding-left: 16px; font-size: 13px; line-height: 1.7; color: #444; }
+    .process-card .norm { margin-top: 10px; font-size: 12px; font-weight: 600; color: #555; background: rgba(0,0,0,0.05); display: inline-block; padding: 3px 8px; border-radius: 4px; }
+    .color-1 { background: #eef4ff; border-color: #3b82f6; }
+    .color-2 { background: #f0fdf4; border-color: #22c55e; }
+    .color-3 { background: #fff7ed; border-color: #f97316; }
+    .color-4 { background: #fdf4ff; border-color: #a855f7; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .team-card { background: #f8f9fb; border-radius: 8px; padding: 12px 14px; }
+    .team-card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 4px; }
+    .team-card .name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+    .team-card .side { font-size: 11px; color: #888; margin-top: 2px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-avatar { width: 36px; height: 36px; background: #1a1a2e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .contact-info .cname { font-size: 13px; font-weight: 600; }
+    .contact-info .crole { font-size: 12px; color: #888; }
+    .contact-info .cemail { font-size: 11px; color: #3b82f6; margin-top: 2px; }
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+    .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; }
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok { background: #f0fdf4; color: #166534; }
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .link-item { display: flex; align-items: center; gap: 10px; background: #f8f9fb; border-radius: 7px; padding: 10px 12px; text-decoration: none; color: inherit; }
+    .link-item:hover { background: #eef4ff; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc { font-size: 11px; color: #888; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; font-size: 13px; }
+    .footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Dr.Max Polska</h1>
+      <p>SEO + GEO + Content + Link Building — Brief Projektu</p>
+    </div>
+    <div class="header-right">
+      <span class="badge">ONGOING</span>
+      <div class="budget">wg media planu <span>netto/mies.</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Umowa od</div><div class="value">1 kwietnia 2026</div></div>
+      <div class="meta-item"><div class="label">Zamówienie marzec</div><div class="value">8 925 PLN netto</div></div>
+      <div class="meta-item"><div class="label">Stawka godzinowa</div><div class="value">165 PLN/h</div></div>
+      <div class="meta-item"><div class="label">PM Whites</div><div class="value">Monika Zielińska-Tymochowicz</div></div>
+      <div class="meta-item"><div class="label">Raportowanie</div><div class="value">Excel godzinowy + ClickUp</div></div>
+      <div class="meta-item"><div class="label">Cel klienta</div><div class="value">Wyprzedzenie DOZ.pl w SEO/GEO</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zakres prac</div>
+    <div class="process-grid">
+      <div class="process-card color-1">
+        <h3>Strategia SEO &amp; GEO</h3>
+        <div class="subtitle">Analiza, pozycjonowanie AI, PDP/PLP</div>
+        <ul>
+          <li>Analiza widoczności vs DOZ / Gemini</li>
+          <li>Analiza PDP/PLP (24k produktów)</li>
+          <li>Monthly reporting do centrali (BDC)</li>
+          <li>Matryca linkowania wewnętrznego</li>
+          <li>Analiza konkurencji per kategoria</li>
+          <li>Raport do 15. każdego miesiąca</li>
+        </ul>
+        <span class="norm">KKF + Maciej Figiel + Olaf</span>
+      </div>
+      <div class="process-card color-2">
+        <h3>Content SEO</h3>
+        <div class="subtitle">Artykuły, reuse, opisy produktowe</div>
+        <ul>
+          <li>Artykuły blogowe z weryfikacją med.</li>
+          <li>Reuse istniejących treści</li>
+          <li>Opisy produktowe AI (w planowaniu)</li>
+          <li>Linkowanie wewnętrzne w tekstach</li>
+          <li>Plan contentowy 6-miesięczny</li>
+          <li>Autorzy: "zweryfikowane przez" (do rozwiązania)</li>
+        </ul>
+        <span class="norm">~130k zzs art. / mies.</span>
+      </div>
+      <div class="process-card color-3">
+        <h3>Link Building</h3>
+        <div class="subtitle">Zakup linków, teksty, raportowanie</div>
+        <ul>
+          <li>Propozycje i zakup linków (WhitePress)</li>
+          <li>Teksty do artykułów sponsorowanych</li>
+          <li>Miesięczny raport LB (do 22. mies.)</li>
+          <li>Zgodność z regulacjami medycznymi</li>
+        </ul>
+        <span class="norm">~12 000 PLN/mies. budżet LB</span>
+      </div>
+      <div class="process-card color-4">
+        <h3>Konsultacje &amp; Narzędzia</h3>
+        <div class="subtitle">R&amp;D, AI tools, CMS</div>
+        <ul>
+          <li>Konsultacje GEO/R&amp;D (KKF)</li>
+          <li>Dedykowane narzędzie SEO (Marcin Drabik)</li>
+          <li>Dostęp CMS Magento / eShop</li>
+          <li>Szkolenie AI dla Dr.Max (planowane VI 2026)</li>
+          <li>Dashboard raportowy (Google Data Studio)</li>
+        </ul>
+        <span class="norm">~90h/mies. wg media planu</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zespół Whites</div>
+    <div class="team-grid">
+      <div class="team-card"><div class="role">Project Manager</div><div class="name">Monika Zielińska-Tymochowicz</div><div class="side">pierwsza linia kontaktu</div></div>
+      <div class="team-card"><div class="role">Content &amp; Strategia</div><div class="name">Magdalena Rozmus</div><div class="side">artykuły, plan contentowy</div></div>
+      <div class="team-card"><div class="role">Specjalista GEO/SEO</div><div class="name">Maciej Figiel</div><div class="side">analityka, PDP, strategia</div></div>
+      <div class="team-card"><div class="role">Specjalista GEO/LB</div><div class="name">Olaf Piotrowski</div><div class="side">link building, dashboard</div></div>
+      <div class="team-card"><div class="role">Konsultacje GEO/R&amp;D</div><div class="name">KKF</div><div class="side">Krzysztof Kowalczuk-Fijałkowski</div></div>
+      <div class="team-card"><div class="role">Narzędzia SEO</div><div class="name">Marcin Drabik</div><div class="side">dedykowane narzędzie</div></div>
+      <div class="team-card"><div class="role">CMS / Magento</div><div class="name">Dagmara</div><div class="side">dostęp CMS, publikacje</div></div>
+      <div class="team-card"><div class="role">Account / Zarząd</div><div class="name">Marcin Kubik</div><div class="side">eskalacje, spotkania zarządowe</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+    <div class="contact-row">
+      <div class="contact-avatar">NK</div>
+      <div class="contact-info">
+        <div class="cname">Natalia Koncewicz</div>
+        <div class="crole">Ekspertka SEO — główna linia kontaktu, ClickUp, statusy</div>
+        <div class="cemail">natalia.koncewicz@drmax.com.pl · +48 502 245 964</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">MB</div>
+      <div class="contact-info">
+        <div class="cname">Magdalena Bogusz</div>
+        <div class="crole">Przełożona Natalii — decyzje strategiczne, spotkania zarządowe</div>
+        <div class="cemail">magdalena.bogusz@drmax.com.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">KB</div>
+      <div class="contact-info">
+        <div class="cname">Karolina Baran</div>
+        <div class="crole">Koordynatorka contentu — akceptacje tekstów, tematy</div>
+        <div class="cemail">karolina.baran@drmax.com.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">KK</div>
+      <div class="contact-info">
+        <div class="cname">Katarzyna Kurpiel</div>
+        <div class="crole">Specjalistka SEO content — operacyjnie</div>
+        <div class="cemail">katarzyna.kurpiel@drmax.com.pl</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Otwarte sprawy <small style="font-weight:400;color:#bbb;font-size:11px;">(stan: 21.05.2026)</small></div>
+    <div class="alerts">
+      <div class="alert warn"><span class="icon">⚠️</span><div><strong>PLAN NAPRAWCZY — do przygotowania dziś</strong><br>Marcin Kubik przekazał feedback od Magdy Bogusz (21.05): treści nieterminowe, słabe linkowanie wewnętrzne, problem z autorami, niejednolita komunikacja. Spotkanie z klientem + wewnętrzne + action plan. Marcin prosi o dołączenie do najbliższego spotkania.</div></div>
+      <div class="alert warn"><span class="icon">⚠️</span><div><strong>Odpowiedź na mail Karoliny Baran — do EOD 21.05</strong><br>Mail "Wnioski z pierwszych miesięcy współpracy" (20.05). Monika potwierdziła odpowiedź do końca dnia.</div></div>
+      <div class="alert warn"><span class="icon">⚠️</span><div><strong>Raport LB kwiecień — deadline 22.05 EOD</strong><br>Natalia czeka na uzupełnienie raportu link buildingu za kwiecień (Olaf).</div></div>
+      <div class="alert warn"><span class="icon">⚠️</span><div><strong>LB maj — zamówienie i linki do 22.05</strong><br>Natalia zaakceptowała propozycje. Olaf musi zamówić, linki muszą być do 28.05 (przed fakturą).</div></div>
+      <div class="alert warn"><span class="icon">⚠️</span><div><strong>Rozliczenie godzin — sprzeczność media plan vs realia</strong><br>Media plan: 90h @ 165 PLN. KKF twierdzi, że realnie max 50h. Do ustalenia przed wystawieniem faktury za maj. Natalia chce podsumowania kosztów do 27.05.</div></div>
+      <div class="alert info"><span class="icon">ℹ️</span><div><strong>Log file analysis — deadline 22.05</strong><br>Natalia dodała zakres w ClickUp. Realizacja: Olaf + Maciej. Wynik ma trafić do dashboardu.</div></div>
+      <div class="alert info"><span class="icon">ℹ️</span><div><strong>Analiza PDP/PLP — propozycja do akceptacji</strong><br>Wycena: Etap 1 (GEO/AI) = 19 800 PLN, Etap 2 (semantyczny) = 9 900 PLN. Czeka na potwierdzenie Magdy Bogusz.</div></div>
+      <div class="alert info"><span class="icon">ℹ️</span><div><strong>Odpowiedź prawników ws. linkowania wewnętrznego</strong><br>Natalia skomentowała w ClickUp (21.05). Wymaga przeglądu i dalszego działania (Magdalena Rozmus).</div></div>
+      <div class="alert info"><span class="icon">ℹ️</span><div><strong>Szkolenie AI dla Dr.Max — przesunięte na czerwiec</strong><br>Nie zostanie zrealizowane w maju. Monika poinformowała Natalię. Do rozliczenia w czerwcu.</div></div>
+      <div class="alert ok"><span class="icon">✅</span><div><strong>Podsumowanie spotkania strategicznego 13.05</strong><br>Natalia zamknęła task w ClickUp (21.05).</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+      <a class="link-item" href="https://docs.google.com/presentation/d/1Mb43WdnKHox7srjQuqVEKslzCC83etU14YTJLi8uu40/edit" target="_blank"><div class="link-icon">S</div><div><div class="link-label">Strategia SEO</div><div class="link-desc">Google Slides — prezentacja strategii</div></div></a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1kSOeR7Sa2h0YkDwQch5bKudXLD5BHkEwMj2sEtfBaY0/edit" target="_blank"><div class="link-icon">C</div><div><div class="link-label">Plan contentowy</div><div class="link-desc">6-miesięczny plan artykułów</div></div></a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/17ZRN-G-YDsEHAtsrrcqjGc6BqE6NpzBAUp9ABAh-WjY/edit" target="_blank"><div class="link-icon">L</div><div><div class="link-label">Tracker LB</div><div class="link-desc">Link Building — propozycje i raport</div></div></a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1ycGChj6iwzINkMpjO5FYw_97vOqyAqqr/edit" target="_blank"><div class="link-icon">M</div><div><div class="link-label">Matryca linkowania</div><div class="link-desc">Linkowanie wewnętrzne — analiza NLP</div></div></a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1DS73XjfRviqUhn3LZgrqg1nyYK6LHVAPRHdw4hf8dGs/edit" target="_blank"><div class="link-icon">P</div><div><div class="link-label">Priorytety wdrożeń</div><div class="link-desc">Lista priorytetów ze strategii (Maciej)</div></div></a>
+      <a class="link-item" href="https://datastudio.google.com/reporting/6ab7a98d-c23f-469b-9761-9c117585df1f/page/p_bo6zmwbr1d" target="_blank"><div class="link-icon">D</div><div><div class="link-label">Dashboard raportowy</div><div class="link-desc">Google Data Studio — widoczność SEO</div></div></a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1qoOXBzvq2IaILfENDpL1tDdI7oezid3epsnNRWCCEWA/edit" target="_blank"><div class="link-icon">R</div><div><div class="link-label">Rozliczenie godzin</div><div class="link-desc">Excel — podkładka pod fakturę</div></div></a>
+    </div>
+  </div>
+
+  <div class="footer">Ostatnia aktualizacja: maj 2026 · Whites Agency</div>
+
+</div>
+</body>
+</html>
