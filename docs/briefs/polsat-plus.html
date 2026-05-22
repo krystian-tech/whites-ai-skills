@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupa Polsat Plus — Brief Projektu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #2c2c2c; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { background: #1a1a2e; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 700; }
+    .header-left p { color: #a0a8c0; font-size: 13px; margin-top: 4px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .badge { background: #e53935; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .budget { color: #fff; font-size: 20px; font-weight: 700; }
+    .budget span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .process-card { border-radius: 8px; padding: 16px; border-left: 4px solid; }
+    .process-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .process-card .subtitle { font-size: 11px; color: #888; margin-bottom: 10px; }
+    .process-card ul { padding-left: 16px; font-size: 13px; line-height: 1.7; color: #444; }
+    .process-card .norm { margin-top: 10px; font-size: 12px; font-weight: 600; color: #555; background: rgba(0,0,0,0.05); display: inline-block; padding: 3px 8px; border-radius: 4px; }
+    .color-1 { background: #eef4ff; border-color: #3b82f6; }
+    .color-2 { background: #f0fdf4; border-color: #22c55e; }
+    .color-3 { background: #fff7ed; border-color: #f97316; }
+    .color-4 { background: #fdf4ff; border-color: #a855f7; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .team-card { background: #f8f9fb; border-radius: 8px; padding: 12px 14px; }
+    .team-card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 4px; }
+    .team-card .name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+    .team-card .side { font-size: 11px; color: #888; margin-top: 2px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-avatar { width: 36px; height: 36px; background: #1a1a2e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .contact-info .cname { font-size: 13px; font-weight: 600; }
+    .contact-info .crole { font-size: 12px; color: #888; }
+    .contact-info .cemail { font-size: 11px; color: #3b82f6; margin-top: 2px; }
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+    .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; }
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok { background: #f0fdf4; color: #166534; }
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .link-item { display: flex; align-items: center; gap: 10px; background: #f8f9fb; border-radius: 7px; padding: 10px 12px; text-decoration: none; color: inherit; }
+    .link-item:hover { background: #eef4ff; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc { font-size: 11px; color: #888; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; font-size: 13px; }
+    .footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Grupa Polsat Plus</h1>
+      <p>SEO + Content Marketing — Brief Projektu</p>
+    </div>
+    <div class="header-right">
+      <span class="badge">ONGOING</span>
+      <div class="budget">~62 282 PLN <span>netto/mies. (od maja)</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="label">Klient prawny</div>
+        <div class="value">Polkomtel Sp. z o.o.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Marki</div>
+        <div class="value">Plus, Polsat Box, Plush</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Mediaplan</div>
+        <div class="value">2026 (aktualizacja maj)</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">PM Whites</div>
+        <div class="value">Krystian Stefaniuk</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Plus</div>
+        <div class="value">42 282 zł/mies.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Polsat Box</div>
+        <div class="value">8 000 zł/mies.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Plush</div>
+        <div class="value">12 000 zł/mies. (start maj)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zakres prac — 4 obszary</div>
+    <div class="process-grid">
+
+      <div class="process-card color-1">
+        <h3>OBSZAR 1 — SEO Plus</h3>
+        <div class="subtitle">plus.pl — główny serwis</div>
+        <ul>
+          <li>Ekspert SEO (20h/mies.)</li>
+          <li>Specjalista SEO + Content (full)</li>
+          <li>Artykuły lifestyle (10/mies.)</li>
+          <li>Artykuły specjalistyczne (4/mies.) + LP (4/mies.)</li>
+          <li>Infografiki HTML (2/mies.)</li>
+          <li>Content Graph (14/mies.)</li>
+        </ul>
+        <div class="norm">42 282 zł netto/mies. (od maja)</div>
+      </div>
+
+      <div class="process-card color-2">
+        <h3>OBSZAR 2 — SEO Polsat Box</h3>
+        <div class="subtitle">polsatbox.pl</div>
+        <ul>
+          <li>Ekspert SEO (10h/mies.)</li>
+          <li>Specjalista SEO</li>
+          <li>Analiza techniczno-contentowa z GEO</li>
+          <li>Strategia LB</li>
+        </ul>
+        <div class="norm">8 000 zł netto/mies. (od maja)</div>
+      </div>
+
+      <div class="process-card color-3">
+        <h3>OBSZAR 3 — Plush</h3>
+        <div class="subtitle">Strategia SEO-content (start)</div>
+        <ul>
+          <li>White dog dla abonamentów (do 1.06)</li>
+          <li>Check techniczny + AI</li>
+          <li>Check profilu linkowego</li>
+          <li>Plan contentowy 3 mies. (po czerwcu)</li>
+        </ul>
+        <div class="norm">12 000 zł netto/mies.</div>
+      </div>
+
+      <div class="process-card color-4">
+        <h3>OBSZAR 4 — Video, Quizy, LB</h3>
+        <div class="subtitle">Discovery Portal + Link Building</div>
+        <ul>
+          <li>Video pionowe + quizy (Filip)</li>
+          <li>Link Building 4–7 publikacji/mies.</li>
+          <li>Opisy YT dla materiałów</li>
+        </ul>
+        <div class="norm">W ramach mediaplanu Plus</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Zespół Whites</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">PM</div>
+        <div class="name">Krystian Stefaniuk</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Senior SEO</div>
+        <div class="name">Rafał Kobylarczyk</div>
+        <div class="side">Whites — główny kontakt techniczny</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Content</div>
+        <div class="name">Dagmara Sagan</div>
+        <div class="side">Whites — koordynacja tekstów</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Analityka</div>
+        <div class="name">Olaf Piotrowski</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Video / Quizy</div>
+        <div class="name">Filip Kulisz</div>
+        <div class="side">Whites</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+    <div class="contact-row">
+      <div class="contact-avatar">AS</div>
+      <div class="contact-info">
+        <div class="cname">Agnieszka Szymańska-Sikora</div>
+        <div class="crole">Główna decydentka — patrzy na wyniki, KPI i rozliczenia</div>
+        <div class="cemail">agnieszka.s.sikora@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">PK</div>
+      <div class="contact-info">
+        <div class="cname">Paulina Kotlarska</div>
+        <div class="crole">Konsultant — przejmuje operacyjnie po Oli (teksty, Plush, koordynacja)</div>
+        <div class="cemail">paulina.kotlarska@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">OS</div>
+      <div class="contact-info">
+        <div class="cname">Aleksandra (Ola) Sętorek</div>
+        <div class="crole">Komunikacja Digitalowa — ODCHODZI z firmy (potwierdzone 18.05)</div>
+        <div class="cemail">aleksandra.setorek@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">DZ</div>
+      <div class="contact-info">
+        <div class="cname">Daniel Zawisłak</div>
+        <div class="crole">Analityk — kontakt techniczny (po Tomku). Niedostępny: cięcia kadrowe</div>
+        <div class="cemail">daniel.zawislak@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">AB</div>
+      <div class="contact-info">
+        <div class="cname">Anna Bukowska-Strulak</div>
+        <div class="crole">Kierownik Rozwoju Produktów Digitalowych — zmiany URL, /sklep/</div>
+        <div class="cemail">anna.strulak@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">KP</div>
+      <div class="contact-info">
+        <div class="cname">Klaudia Pagowska</div>
+        <div class="crole">Technikalia (schema, VideoObject) — drobne pytania do Rafała</div>
+        <div class="cemail">klaudia.pagowska@plus.pl</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Otwarte sprawy</div>
+    <div class="alerts">
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Ruch organiczny spada</strong> — Agnieszka wprost zapytała w raporcie (29.04) „co się dzieje, że tak leci?". Temat na status, niezamknięty.</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Analityka — GA vs GSC się rozjeżdżają</strong> — podejrzenie grzebania w modelach atrybucji + linki afiliacyjne w kanale organicznym. Wymaga wspólnego spotkania z Danielem.</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Daniel Zawisłak niedostępny</strong> — cięcia etatów po stronie Polkomtel. Tematy techniczne i testy na Plushu wiszą bez analityki.</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>404 ze stron /sklep/</strong> — Rafał wysłał listę URLi (18.05). Klient potwierdził że analizuje po swojej stronie.</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>3 z 4 kolejnych tematów video</strong> — Ola miała wrócić z propozycją, nie wróciła (potwierdzony tylko „Jak odinstalować…").</span>
+      </div>
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Zmiana adresów URL produktów</strong> — aktywny wątek z Anią Strulak; ustalenie wersji minimum vs optymalna.</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Spotkanie podsumowujące — początek czerwca</strong> — Ola zorganizowała na prośbę Agnieszki. Kontekst: planowane ograniczenie zasobów po stronie klienta. Uczestnicy: Ola, Paulina, Agnieszka, ewentualnie Paula Kłeczek.</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Strategia Plush</strong> — do 1.06 pierwsza część (white dog, check techniczny, profil linkowy). Druga część (plan contentowy + content gap) do początku czerwca.</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Przekazanie projektu Paulinie</strong> — po odejściu Oli warto sformalizować, kto co przejmuje (operacyjnie / komunikacyjnie).</span>
+      </div>
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Format raportu „post-buy"</strong> — Agnieszka prosiła w marcu o format jak przy działaniach mediowych. Do dowiezienia.</span>
+      </div>
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Nowa oprawa video zaakceptowana</strong> — Ola potwierdziła 20.05 że „wygląda świeżej i bardziej czytelnie".</span>
+      </div>
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Dostępy GA/GSC dla Plush</strong> — działają od 21.05 (Paulina potwierdziła).</span>
+      </div>
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Raport co 2 tygodnie</strong> — Rafał wysyła, Agnieszka docenia tempo.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1ktRcsAEIGLyfUKh3yYMyZDstQ8Jtj81S" target="_blank">
+        <div class="link-icon">📊</div>
+        <div>
+          <div class="link-label">Tracker tekstów</div>
+          <div class="link-desc">Status treści — nowe &amp; reuse</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1Qad_R_ZR8slWhG8LZG5y4X5IUHSx-y51aY1G8ZlvuBU" target="_blank">
+        <div class="link-icon">💰</div>
+        <div>
+          <div class="link-label">Mediaplany 2026 (aktualne)</div>
+          <div class="link-desc">Plus + Polsat Box + Plush od maja</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://datastudio.google.com/u/3/reporting/3120927b-6711-4b7b-99c1-d6b199c199e0" target="_blank">
+        <div class="link-icon">📈</div>
+        <div>
+          <div class="link-label">Raport Looker Studio</div>
+          <div class="link-desc">Plus.pl + Polsatbox.pl</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1WgtjcyiOWJnb9Z7nyPPvwiQsYB_bu-y_cqnsAG3-w58" target="_blank">
+        <div class="link-icon">🔧</div>
+        <div>
+          <div class="link-label">Analiza smartDOM</div>
+          <div class="link-desc">Rekomendacje + prędkość ładowania</div>
+        </div>
+      </a>
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1jcerjDPIZ-f5m2ZAlnbfFwF44TkdGIs5ju3Sph9mZU4" target="_blank">
+        <div class="link-icon">🔗</div>
+        <div>
+          <div class="link-label">Analiza lost links</div>
+          <div class="link-desc">Z priorytetami + FAQ</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">Ostatnia aktualizacja: maj 2026 · Whites Agency</div>
+
+</div>
+</body>
+</html>
