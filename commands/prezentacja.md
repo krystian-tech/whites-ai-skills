@@ -187,6 +187,7 @@ Placeholder na podtytuł: `"Ścieżka pacjenta, lekarza i farmaceuty"` → podmi
 | 3 elementy — wariant wizualny B | `three_boxes_alt_2` |
 
 **REGUŁA:** Każde 3 równoległe elementy → `three_boxes` (nie bullets!). Jeśli 4 elementy → `analysis_numbered` lub 2× `three_boxes`.
+**UWAGA:** `three_boxes` ma IDENTYCZNY placeholder we wszystkich 3 boxach — `replaceAllText` wstawi ten sam tekst do każdego boxa. Dla sekwencji/faz/kroków (gdzie każdy element jest INNY) używaj `analysis_numbered`, nie `three_boxes`.
 
 ---
 
@@ -325,6 +326,8 @@ Sprawdź każdy punkt przed finalizacją:
 - [ ] Slajdy 3–5 = `long_description` (1 osoba / 1 slajd)
 - [ ] Ostatni slajd = `contact_2`
 - [ ] Brak dwóch identycznych typów pod rząd (poza wyjątkami)
+- [ ] Wyszukaj globalnie `"Lorem ipsum"` i usuń/zastąp wszystkie wystąpienia przed finalizacją — `list_slides` NIE pokazuje pełnego tekstu każdego pola, Lorem ipsum może być ukryte
+- [ ] Wyszukaj `"Przykładowy układ"`, `"PRZYKŁADOWA"`, `"hasłowe wyliczenie"`, `"Warto zdefiniować"` — zastąp jeśli nadal istnieją
 - [ ] Wszystkie pola każdego slajdu wypełnione — zero placeholderów z szablonu
 - [ ] Limity znaków nie przekroczone
 - [ ] Liczba slajdów zgodna z zatwierdzonym planem
