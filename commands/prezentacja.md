@@ -56,7 +56,14 @@ SLAJD [N] | [TYP]
 [pełna treść — nagłówki, punkty, liczby, dokładnie to co trafi na slajd]
 ```
 
-Plan musi zawierać **dokładną treść** każdego slajdu — nie ogólniki, nie "tu wstaw coś o SEO". Jeśli masz dane — wstaw je. Jeśli brakuje — zaznacz `[BRAK]`.
+**Standard głębokości treści — KRYTYCZNE.** Każdy punkt musi być na tyle konkretny, że można go od razu wkleić na slajd. Zbyt ogólne sformułowanie = błąd planu.
+
+| Niedopuszczalne | Wymagane |
+|-----------------|----------|
+| "Wyzwania klienta" | "Brak osoby wewnętrznej do nagrywania video co 2 tygodnie" |
+| "Dane rynkowe" | "74% odbiorców preferuje autentyczne wideo — Sprout Social 2024" |
+| "Strategia contentu" | "6 rolek produktowych, 1 dzień sesji, Miś jako narrator" |
+| "Nasze podejście" | "Human-led, AI-powered: strategia → agenci → redakcja" |
 
 **Pokaż plan i CZEKAJ na zatwierdzenie użytkownika ("ok" / "generuj" / "gotowe") przed Fazą 2.**
 
@@ -70,11 +77,48 @@ Po zatwierdzeniu planu:
    `create_presentation(title: "[KLIENT] — [TEMAT]", folder_id: "1NtVEVJ676zaU6EXvrq4lTJYiQg30qo3P")`
    — domyślny folder prezentacji Whites; zmień tylko jeśli Krystian poda inny wprost.
 
-3. **Dodaj slajdy z planu** — dla każdego: `add_slide` → `replace_text` z zatwierdzonym tekstem
+2. **Dodaj slajdy z planu** — dla każdego: `add_slide` → `replace_text` z zatwierdzonym tekstem (patrz sekcja techniczna poniżej)
 
-4. **Sprawdź walidację** (lista na końcu skilla) przed `finalize_presentation()`
+3. **Sprawdź walidację** (lista na końcu skilla) przed `finalize_presentation()`
 
-5. **Podaj link** do gotowej prezentacji.
+4. **Podaj link** do gotowej prezentacji.
+
+---
+
+## JAK DZIAŁA replace_text — ZASADY TECHNICZNE
+
+`replace_text` to Google Slides `replaceAllText` — podmienia WSZYSTKIE wystąpienia szukanego tekstu w całej prezentacji.
+**Zawsze podawaj `slide_id`** — inaczej trafisz w slajdy szablonowe, które jeszcze nie zostały usunięte.
+
+### Agenda (slajd 2)
+Szablon `agenda` ma JEDNO pole tekstowe na wszystkie pozycje agendowe. Wstaw wszystkie sekcje w jednym `replace_text` rozdzielone `\n`:
+
+```
+replace_text(
+  find:     "Case Study",
+  replace:  "01 Tytuł sekcji pierwszej\n02 Tytuł sekcji drugiej\n03 Tytuł sekcji trzeciej\n04 Tytuł sekcji czwartej",
+  slide_id: [id slajdu agendy]
+)
+```
+
+Jeśli szablon ma też placeholder "Co dziś przygotowaliśmy?" — podmień na "Agenda" lub krótki opis.
+
+### Slajdy z wieloma itemami (bullets, recommendations, challenges)
+Wszystkie itemy w JEDNYM replace_text rozdzielone `\n`:
+```
+replace_text(find: "Warto zdefiniować", replace: "Item 1\nItem 2\nItem 3\nItem 4", slide_id: ...)
+```
+
+### Slajdy section / section_subtitle
+Placeholdery: `"PRZYKŁADOWA"` (tytuł) i `"przekladka z podtytułem"` (podtytuł).
+Każdy section_subtitle musi być podmieniony OSOBNO ze swoim `slide_id` — inaczej zmienisz wszystkie naraz na ten sam tekst.
+
+### Slajd kontaktowy (ostatni) — `contact_2`
+Używaj wyłącznie `contact_2`. Zawiera adres Whites bez hardcoded zdjęcia konkretnej osoby.
+**Zdjęcia NIE można podmienić przez `replace_text` — nie próbuj.**
+
+### Slajd tytułowy (slajd 1)
+Placeholder na podtytuł: `"Ścieżka pacjenta, lekarza i farmaceuty"` → podmień na temat prezentacji.
 
 ---
 
@@ -83,10 +127,10 @@ Po zatwierdzeniu planu:
 ### Każda prezentacja zaczyna się tak (bez wyjątków):
 | Slajd | Typ | Treść |
 |-------|-----|-------|
-| 1 | `title` | Nagłówek: "Osiągamy ambitne cele z największymi firmami w Polsce i na świecie" + konkretny temat prezentacji jako podtytuł |
-| 2 | `agenda` | Sekcje ponumerowane 01, 02, 03… (max 8 punktów) |
-| 3–5 | team | Imię, rola, bio 2–3 zdania — każda osoba osobno lub razem wg szablonu zespołu |
-| ostatni | `contact` lub `contact_2` | Dane kontaktowe PM, adres, logo |
+| 1 | `title` | "Osiągamy ambitne cele z największymi firmami w Polsce i na świecie" + temat prezentacji jako podtytuł |
+| 2 | `agenda` | Sekcje 01, 02, 03… (max 8) — jeden replace_text z `\n` na separator |
+| 3–5 | `long_description` | 1 slajd = 1 osoba: imię jako tytuł, rola + bio 2–3 zdania jako treść |
+| ostatni | `contact_2` | Whites Sp. z o.o., adres, kontakt — NIE podmieniaj zdjęcia |
 
 ---
 
@@ -186,18 +230,18 @@ Po zatwierdzeniu planu:
 
 ### Oferta (sprzedażowa)
 ```
-title → agenda → team → [sekcja: problem/wyzwania klienta: challenges] →
+title → agenda → team (long_description × N osób) → [sekcja: problem/wyzwania klienta: challenges] →
 [sekcja: nasze podejście: strategy / three_boxes] →
 [sekcja: zakres usług: analysis_numbered + bullets_headers] →
 [sekcja: case studies: bullets_headers + stat_big] →
 [sekcja: deliverables i harmonogram: recommendations + analysis_numbered] →
 [sekcja: budżet: long_description lub bullets] →
-contact
+contact_2
 ```
 
 ### Strategia
 ```
-title → agenda → team →
+title → agenda → team (long_description × N osób) →
 [sekcja: kontekst rynkowy / AI: stat_big × 3–5 + long_description] →
 [sekcja: cele strategiczne: three_boxes lub strategy] →
 [sekcja: analiza sytuacji wyjściowej: analysis_numbered + data_analysis_numbered] →
@@ -205,18 +249,18 @@ title → agenda → team →
 [sekcja: rekomendacje: analysis_numbered + recommendations] →
 [sekcja: plan działania: strategy + recommendations] →
 [sekcja: KPI: stat_big + bullets] →
-contact
+contact_2
 ```
 
 ### Warsztaty / kick-off
 ```
-title → agenda → team →
+title → agenda → team (long_description × N osób) →
 [sekcja: kontekst / cel warsztatów: long_description] →
 [blok tematyczny 1: section → bullets_headers → analysis_numbered] →
 [blok tematyczny 2: section → bullets_headers → three_boxes] →
 [...kolejne bloki...] →
 [sekcja: wnioski / Q&A: summary + bullets] →
-contact
+contact_2
 ```
 
 ### Raport / podsumowanie
@@ -228,7 +272,7 @@ title → agenda →
 [...] →
 [sekcja: wnioski: summary lub long_description] →
 [sekcja: rekomendacje: recommendations + analysis_numbered] →
-contact
+contact_2
 ```
 
 ---
@@ -238,18 +282,18 @@ contact
 | Typ | Tytuł/nagłówek | Treść |
 |-----|----------------|-------|
 | `title` | max 80 znaków | podtytuł max 80 znaków |
-| `agenda` | "Agenda" | max 8 punktów × max 45 znaków |
+| `agenda` | "Agenda" | max 8 punktów × max 45 znaków, separator `\n` |
 | `section` | max 45 znaków | — |
 | `section_subtitle` | max 45 znaków | podtytuł max 70 znaków |
 | `stat_big` | liczba max 10 znaków | etykieta max 70 znaków |
-| `bullets` | max 65 znaków | 3–8 punktów × max 65 znaków |
+| `bullets` | max 65 znaków | 3–8 punktów × max 65 znaków, separator `\n` |
 | `bullets_headers` | max 65 znaków | 2–4 grupy × 2–5 punktów × max 65 znaków |
 | `three_boxes` | max 50 znaków/box | max 180 znaków/box |
 | `three_boxes_highlight` | max 50 znaków/box | max 150 znaków/box |
 | `analysis_numbered` | max 65 znaków | 3–5 elementów: nagłówek (45 zn) + opis (220 zn) |
 | `data_analysis_numbered` | max 65 znaków | 3–5 wierszy z 2–3 kolumnami |
-| `challenges` | max 65 znaków | 3–6 wyzwań × max 90 znaków |
-| `recommendations` | max 65 znaków | 3–6 rekomendacji × max 110 znaków |
+| `challenges` | max 65 znaków | 3–6 wyzwań × max 90 znaków, separator `\n` |
+| `recommendations` | max 65 znaków | 3–6 rekomendacji × max 110 znaków, separator `\n` |
 | `strategy` | max 65 znaków | 3–5 filarów z nazwami i opisami |
 | `long_description` | max 65 znaków | max 5 akapitów × max 250 znaków |
 | `text_columns` | max 65 znaków | 2 kolumny × max 300 znaków |
@@ -268,6 +312,7 @@ contact
 5. **Źródła:** Przy każdym `stat_big` i `chart_slide` podaj źródło jeśli dostępne
 6. **Język:** Dopasuj ToV do klienta — B2B/korporacja = formalny; start-up/agencja = bezpośredni
 7. **Nie skracaj:** Jeśli plan zatwierdził 7 punktów analizy — wygeneruj 7, nie 4
+8. **Żadnych generycznych fraz:** "innowacyjne podejście", "kompleksowa obsługa", "dynamiczny rozwój" — to nie są treści slajdów. Każdy punkt musi opisywać KONKRETNE działanie, wynik lub dane.
 
 ---
 
@@ -276,12 +321,14 @@ contact
 Sprawdź każdy punkt przed finalizacją:
 
 - [ ] Slajd 1 = `title` z nagłówkiem "Osiągamy ambitne cele..."
-- [ ] Slajd 2 = `agenda` z ponumerowanymi sekcjami
-- [ ] Slajdy 3–5 zawierają team Whites
-- [ ] Ostatni slajd = `contact` lub `contact_2`
+- [ ] Slajd 2 = `agenda` z ponumerowanymi sekcjami (wszystkie w jednym polu, `\n` jako separator)
+- [ ] Slajdy 3–5 = `long_description` (1 osoba / 1 slajd)
+- [ ] Ostatni slajd = `contact_2`
 - [ ] Brak dwóch identycznych typów pod rząd (poza wyjątkami)
-- [ ] Wszystkie pola każdego slajdu wypełnione — zero pustych placeholderów
+- [ ] Wszystkie pola każdego slajdu wypełnione — zero placeholderów z szablonu
 - [ ] Limity znaków nie przekroczone
 - [ ] Liczba slajdów zgodna z zatwierdzonym planem
+- [ ] Każdy replace_text scoped do `slide_id`
+- [ ] Żadnej generycznej treści — każdy punkt konkretny i oparty na danych
 
 Jeśli cokolwiek nie jest spełnione — popraw **przed** `finalize_presentation()`.
