@@ -4,8 +4,10 @@ REPO="https://raw.githubusercontent.com/krystian-tech/whites-ai-skills/main"
 DEST="$HOME/.claude/commands"
 SKILLS=(
   "billing.md"
+  "catch-up.md"
   "contract-check.md"
   "daily.md"
+  "health-check.md"
   "onepager.md"
   "reminder.md"
   "report-check.md"
@@ -25,4 +27,4 @@ done
 
 echo ""
 echo "Gotowe! Zrestartuj Claude Code żeby skille były aktywne."
-echo "Dostępne komendy: /billing /contract-check /daily /onepager /reminder /report-check /roadmapa /strategy-check /update-skills"
+echo "Dostępne komendy: /billing /catch-up /contract-check /daily /health-check /onepager /reminder /report-check /roadmapa /strategy-check /update-skills"
