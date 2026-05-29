@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dechra — Brief Projektu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #2c2c2c; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { background: #1a1a2e; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 700; }
+    .header-left p { color: #a0a8c0; font-size: 13px; margin-top: 4px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .badge { background: #22c55e; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .budget { color: #fff; font-size: 20px; font-weight: 700; }
+    .budget span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .process-card { border-radius: 8px; padding: 16px; border-left: 4px solid; }
+    .process-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .process-card .subtitle { font-size: 11px; color: #888; margin-bottom: 10px; }
+    .process-card ul { padding-left: 16px; font-size: 13px; line-height: 1.7; color: #444; }
+    .process-card .norm { margin-top: 10px; font-size: 12px; font-weight: 600; color: #555; background: rgba(0,0,0,0.05); display: inline-block; padding: 3px 8px; border-radius: 4px; }
+    .color-1 { background: #eef4ff; border-color: #3b82f6; }
+    .color-2 { background: #f0fdf4; border-color: #22c55e; }
+    .color-3 { background: #fff7ed; border-color: #f97316; }
+    .color-4 { background: #fdf4ff; border-color: #a855f7; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .team-card { background: #f8f9fb; border-radius: 8px; padding: 12px 14px; }
+    .team-card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 4px; }
+    .team-card .name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+    .team-card .side { font-size: 11px; color: #888; margin-top: 2px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-avatar { width: 36px; height: 36px; background: #1a1a2e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .contact-info .cname { font-size: 13px; font-weight: 600; }
+    .contact-info .crole { font-size: 12px; color: #888; }
+    .contact-info .cemail { font-size: 11px; color: #3b82f6; margin-top: 2px; }
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+    .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; }
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok { background: #f0fdf4; color: #166534; }
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .link-item { display: flex; align-items: center; gap: 10px; background: #f8f9fb; border-radius: 7px; padding: 10px 12px; text-decoration: none; color: inherit; }
+    .link-item:hover { background: #eef4ff; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc { font-size: 11px; color: #888; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; font-size: 13px; }
+    .genesis { background: #f8f9fb; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #444; border-left: 4px solid #1a1a2e; }
+    .genesis strong { color: #1a1a2e; }
+    .footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Dechra</h1>
+      <p>Produkcja wideo / UGC — Brief Projektu</p>
+    </div>
+    <div class="header-right">
+      <span class="badge">NOWY KLIENT</span>
+      <div class="budget">do ustalenia <span>netto/mies.</span></div>
+    </div>
+  </div>
+
+  <!-- GENEZA -->
+  <div class="section">
+    <div class="section-title">Geneza projektu</div>
+    <div class="genesis">
+      <strong>Dechra</strong> to brytyjska firma weterynaryjna/farmaceutyczna specjalizująca się w dietach leczniczych i suplementach dla zwierząt (koty i psy). Projekt trafił do Whites jako przetarg — newbiz prowadziły <strong>Mery</strong> (kreacja oferty) i <strong>Maciej Woźniak</strong> (sprzedaż). Whites wygrał przetarg <strong>27 maja 2026</strong> — klient wybrał nas za pomysł kreatywny i znajomość procesu produkcyjnego UGC.<br><br>
+      Zakres dotyczy produkcji serii filmów wideo z udziałem prawdziwych zwierząt (kotów i psów), promujących linie produktowe Dechra: <strong>Special Care</strong> (diety lecznicze: dermatologia, kardiologia, waga, endokrynologia) oraz <strong>Every Day</strong> (karma codzienna, szczenięta). Projekt realizowany jest na rynek <strong>polski</strong>, materiały będą w języku angielskim.
+    </div>
+  </div>
+
+  <!-- META -->
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Deal zamknięty</div><div class="value">27 maja 2026</div></div>
+      <div class="meta-item"><div class="label">PM Whites</div><div class="value">Krystian Stefaniuk</div></div>
+      <div class="meta-item"><div class="label">Formalizacja</div><div class="value">Purchase Order (w trakcie)</div></div>
+      <div class="meta-item"><div class="label">Budżet</div><div class="value">do ustalenia po PO</div></div>
+      <div class="meta-item"><div class="label">Rynek</div><div class="value">Polska</div></div>
+      <div class="meta-item"><div class="label">Język materiałów</div><div class="value">Angielski</div></div>
+      <div class="meta-item"><div class="label">Kickoff wewnętrzny</div><div class="value">8 czerwca 2026, 11:00</div></div>
+      <div class="meta-item"><div class="label">Kickoff z klientem</div><div class="value">15 czerwca 2026, 11:00–13:00</div></div>
+    </div>
+  </div>
+
+  <!-- ZAKRES -->
+  <div class="section">
+    <div class="section-title">Zakres prac</div>
+    <div class="process-grid">
+
+      <div class="process-card color-1">
+        <h3>Produkcja wideo</h3>
+        <div class="subtitle">Special Care + Every Day</div>
+        <ul>
+          <li>Seria filmów per kategoria diety</li>
+          <li>Zwierzęta: ~32 koty i psy</li>
+          <li>Casting wg rasy (nie schorzenia)</li>
+          <li>Wyjątki: psy z nadwagą, stare koty</li>
+          <li>Preferowane rasy: Labrador (waga), King Charles (serce)</li>
+        </ul>
+        <span class="norm">TBD ilość filmów</span>
+      </div>
+
+      <div class="process-card color-2">
+        <h3>UGC — Rekrutacja właścicieli</h3>
+        <div class="subtitle">Casting zwierząt i opiekunów</div>
+        <ul>
+          <li>Rekrutacja właścicieli zwierząt</li>
+          <li>Opcja: akcja z donacją dla schroniska (PR + rekrutacja)</li>
+          <li>Komunikacja startuje od początku projektu</li>
+          <li>Scenariusze nagrań per właściciel/zwierzę</li>
+        </ul>
+        <span class="norm">Start: po kickoffie 15.06</span>
+      </div>
+
+      <div class="process-card color-3">
+        <h3>Post-produkcja</h3>
+        <div class="subtitle">Podmiana opakowań</div>
+        <ul>
+          <li>Every Day: nowe opakowania dostępne wkrótce</li>
+          <li>Special Care: stare opakowania przez 12–18 mies.</li>
+          <li>Plan: kręcenie z obecnymi → podmiana w post-prod</li>
+          <li>Metody: AI swap, chowanie paczek w tle, druk mockupów</li>
+        </ul>
+        <span class="norm">Rozwiązanie: kickoff 15.06</span>
+      </div>
+
+      <div class="process-card color-4">
+        <h3>Moodboard i scenariusze</h3>
+        <div class="subtitle">Faza kreatywna</div>
+        <ul>
+          <li>Briefs produktowe od Dechra (7–10 bulletów/kategorię)</li>
+          <li>Opracowanie moodboardów</li>
+          <li>Scenariusze per film/kategoria</li>
+          <li>Akceptacja klienta przed produkcją</li>
+        </ul>
+        <span class="norm">Start: po kickoffie 15.06</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ZESPÓŁ -->
+  <div class="section">
+    <div class="section-title">Zespół Whites</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">Project Manager</div>
+        <div class="name">Krystian Stefaniuk</div>
+        <div class="side">Whites — PM od 28.05.2026</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Project Lead / Produkcja</div>
+        <div class="name">Maria Bratkowska</div>
+        <div class="side">Whites — prowadzi projekt</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Kreacja / Strategia</div>
+        <div class="name">Mery</div>
+        <div class="side">Whites — autorka oferty, wraca 8.06</div>
+      </div>
+      <div class="team-card">
+        <div class="role">UGC / Video</div>
+        <div class="name">Filip Kulisz</div>
+        <div class="side">Whites — specjalista video</div>
+      </div>
+      <div class="team-card">
+        <div class="role">New Biz (przekazuje)</div>
+        <div class="name">Maciej Woźniak</div>
+        <div class="side">Whites — zamknął deal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKTY KLIENTA -->
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+
+    <div class="contact-row">
+      <div class="contact-avatar">AN</div>
+      <div class="contact-info">
+        <div class="cname">Anita</div>
+        <div class="crole">Koordynator projektu — Dechra Polska</div>
+        <div class="cemail">główny punkt kontaktu operacyjnego</div>
+      </div>
+    </div>
+
+    <div class="contact-row">
+      <div class="contact-avatar">DO</div>
+      <div class="contact-info">
+        <div class="cname">Dominic</div>
+        <div class="crole">Product Knowledge / Opiekun produktowy</div>
+        <div class="cemail">dostarcza materiały produktowe i dane do PO</div>
+      </div>
+    </div>
+
+    <div class="contact-row">
+      <div class="contact-avatar">AD</div>
+      <div class="contact-info">
+        <div class="cname">Adrian</div>
+        <div class="crole">Dechra — kontakt sprzedażowy / inicjujący</div>
+        <div class="cemail">pierwszy kontakt po stronie klienta</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OTWARTE SPRAWY -->
+  <div class="section">
+    <div class="section-title">Otwarte sprawy</div>
+    <div class="alerts">
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Purchase Order do wysłania</strong> — Whites przygotowuje PO (z prawami autorskimi i IP) i wysyła do Dechra. Dechra podpisuje i rejestruje Whites jako dostawcę w systemie.</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Materiały produktowe od Dominica</strong> — czekamy na: briefs kategorii diet (7–10 bulletów/kat.), linki do pet owner website (EN), porównanie starych i nowych opakowań.</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Rozwiązanie problemu opakowań</strong> — Maria przygotowuje na kickoff 15.06 propozycję jak obsłużyć brak nowych opakowań Special Care (AI swap / chowanie w tle / mockupy).</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <div><strong>Donacja dla schroniska — weryfikacja wewnętrzna Dechra</strong> — pomysł zaakceptowany koncepcyjnie, ale wymaga sprawdzenia polityki antykorupcyjnej w Dechrze. Dominic/Anita szukają nowej osoby odpowiedzialnej (po odejściu Melanie Hall).</div>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <div><strong>Kickoff wewnętrzny Whites</strong> — 8 czerwca 2026, 11:00–12:00 (Google Meet). Uczestnicy: Krystian Stefaniuk, Filip Kulisz. Zaprasza Maria Bratkowska.</div>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <div><strong>Kickoff z klientem</strong> — 15 czerwca 2026, 11:00–13:00. Agenda: omówienie materiałów, plan produkcji, casting, harmonogram, kwestia opakowań.</div>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <div><strong>Deal wygrany</strong> — 27.05.2026. Whites wybrany spośród konkurencji za koncepcję kreatywną i znajomość procesu UGC.</div>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <div><strong>Casting zwierząt uproszczony</strong> — Dechra potwierdziła: zwierzęta NIE muszą mieć schorzeń. Liczy się rasa i wygląd (wyjątek: psy z nadwagą, stare koty).</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ZASOBY -->
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+
+      <a class="link-item" href="https://agencjawhites.slack.com/archives/C0B1LLTH3DJ" target="_blank">
+        <div class="link-icon">S</div>
+        <div>
+          <div class="link-label">#newbiz_dechra_kreacja</div>
+          <div class="link-desc">Kanał Slack projektu</div>
+        </div>
+      </a>
+
+      <a class="link-item" href="https://app.bluedothq.com/preview/6a16cf6351389814caaaac26" target="_blank">
+        <div class="link-icon">B</div>
+        <div>
+          <div class="link-label">BlueDot — Kickoff call</div>
+          <div class="link-desc">Nagranie 27.05.2026 (SPECIFIC & Whites)</div>
+        </div>
+      </a>
+
+      <a class="link-item" href="https://docs.google.com/presentation/d/1chPq-LogEkOPovFTCjDWg7bRU6mxkEYOt32yrcXr2xc/edit" target="_blank">
+        <div class="link-icon">P</div>
+        <div>
+          <div class="link-label">Deck ofertowy</div>
+          <div class="link-desc">Prezentacja Whites dla Dechra</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer">Ostatnia aktualizacja: maj 2026 · Whites Agency</div>
+
+</div>
+</body>
+</html>
