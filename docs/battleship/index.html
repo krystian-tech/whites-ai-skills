@@ -83,6 +83,8 @@
         .cell.enemy-miss::after { content: '○'; color: rgba(77,184,255,.5); }
         .cell.sunk { background: #3d0208; border: 1px solid #8b0000; }
         .cell.sunk::after { content: '🔥'; }
+        .cell.dead-zone { background: #0d1f30; border: 1px solid rgba(77,184,255,.08); cursor: not-allowed; }
+        .cell.dead-zone::after { content: '×'; color: rgba(77,184,255,.2); font-size: .7rem; }
 
         .status-bar { padding: 14px 20px; border-radius: 10px; margin-bottom: 24px; text-align: center; font-size: 1.05rem; font-weight: 600; border: 2px solid transparent; }
         .status-bar.my-turn { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
@@ -274,6 +276,22 @@ function computeSunkCells(ships, shotSet) {
     return s;
 }
 
+// Pola sąsiadujące z zatopionymi statkami (na pewno puste)
+function computeDeadZone(ships, shotSet) {
+    const dead = new Set();
+    ships.forEach(sh => {
+        if (!sh.cells.every(([r,c]) => shotSet.has(`${r},${c}`))) return; // tylko zatopione
+        sh.cells.forEach(([r,c]) => {
+            for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+                const nr = r+dr, nc = c+dc;
+                if (nr < 0 || nr > 9 || nc < 0 || nc > 9) continue;
+                dead.add(`${nr},${nc}`);
+            }
+        });
+    });
+    return dead;
+}
+
 // ── State ──────────────────────────────────────────────────
 let roomId = null, me = null, them = null;
 let placed = [];       // placed[i] = { cells: [[r,c],...] } or undefined
@@ -334,7 +352,7 @@ const serShots = arr => arr.map(([r,c]) => `${r},${c}`).join(';');
 const desShots = str => !str ? [] : str.split(';').filter(Boolean).map(s => s.split(',').map(Number));
 
 // ── Grid builder (game screen) ─────────────────────────────
-function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, sunkSet=new Set(), isEnemy=false, onCellClick=null } = {}) {
+function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, sunkSet=new Set(), deadZone=new Set(), isEnemy=false, onCellClick=null } = {}) {
     el.innerHTML = '';
     el.appendChild(Object.assign(document.createElement('div'), {className:'gl'}));
     for (let c = 0; c < 10; c++)
@@ -351,6 +369,7 @@ function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=
                 if (sunkSet.has(key))                     cell.classList.add('sunk');
                 else if (shot && enemyShipSet.has(key))   cell.classList.add('enemy-hit');
                 else if (shot)                             cell.classList.add('enemy-miss');
+                else if (deadZone.has(key))               cell.classList.add('dead-zone');
                 else if (onCellClick) { cell.classList.add('shootable'); cell.onclick = () => onCellClick(r, c); }
             } else {
                 const isShip = myShipSet.has(key), wasShot = myShotSet.has(key);
@@ -601,16 +620,31 @@ function goGame() {
         const thShotSet = new Set(thShots.map(([r,c]) => `${r},${c}`));
         const isMyTurn = d.turn === me;
 
+        // Pokaż event drugiej osobie (ten, kto dostał trafienie)
+        if (d.lastEvent && d.lastEventBy && d.lastEventBy !== me) {
+            const prevEvent = buildGrid._lastEvent;
+            const eventKey = `${d.lastEventBy}_${d[`${me}Shots`]}_${d[`${them}Shots`]}`;
+            if (eventKey !== buildGrid._lastEventKey) {
+                buildGrid._lastEventKey = eventKey;
+                const isMyShipHit = d.lastEvent.includes('Trafiony') || d.lastEvent.includes('Zatopiony');
+                if (isMyShipHit) {
+                    const msg = d.lastEvent.replace('Trafiony', 'Twój statek trafiony').replace('Zatopiony', 'Twój statek zatopiony!');
+                    toast(msg, d.lastEvent.includes('Zatopiony') ? 3500 : 2200);
+                }
+            }
+        }
+
         const sb = document.getElementById('status-bar');
         sb.textContent = isMyTurn ? '🎯 Twoja kolej — strzelaj!' : '⏳ Tura przeciwnika...';
         sb.className = `status-bar ${isMyTurn ? 'my-turn' : 'wait'}`;
 
         const mySunkSet = computeSunkCells(myShips, thShotSet);
         const thSunkSet = computeSunkCells(thShips, myShotSet);
+        const thDeadZone = computeDeadZone(thShips, myShotSet);
 
         buildGrid(document.getElementById('my-grid'), { myShipSet: mySet, myShotSet: thShotSet, sunkSet: mySunkSet });
         buildGrid(document.getElementById('enemy-grid'), {
-            myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, isEnemy: true,
+            myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, deadZone: thDeadZone, isEnemy: true,
             onCellClick: isMyTurn ? (r,c) => shoot(r,c) : null,
         });
 
@@ -635,19 +669,25 @@ async function shoot(row, col) {
     if (allSunk) { upd.status = 'finished'; upd.winner = me; }
     else if (!isHit) upd.turn = them;
     await update(ref(db, `games/${roomId}`), upd);
+    // Ustal komunikat o zdarzeniu
+    let eventMsg = '';
     if (allSunk) {
-        toast('🏆 Zatopiłeś wszystkie statki!', 4000);
+        eventMsg = '🏆 KONIEC GRY';
     } else if (isHit) {
         const thShipsArr = desShips(d[`${them}Ships`]);
         const hitShip = thShipsArr.find(sh => sh.cells.some(([r,c]) => `${r},${c}` === key));
         const len = hitShip.cells.length;
         const name = SHIP_NAMES[len] || `${len}-masztowiec`;
         const shipSunk = hitShip.cells.every(([r,c]) => myShotSet.has(`${r},${c}`));
-        if (shipSunk) toast(`🔥 Zatopiony! ${name} (${len})`, 3500);
-        else toast(`💥 Trafiony, niezatopiony — ${name} (${len})`);
+        eventMsg = shipSunk ? `🔥 Zatopiony — ${name} (${len})` : `💥 Trafiony, niezatopiony — ${name} (${len})`;
     } else {
-        toast('💦 Pudło!');
+        eventMsg = '💦 Pudło!';
     }
+    upd.lastEvent = eventMsg;
+    upd.lastEventBy = me;
+
+    await update(ref(db, `games/${roomId}`), upd);
+    toast(eventMsg, eventMsg.includes('Zatopiony') ? 3500 : 2200);
 }
 
 // ── FINISH ──────────────────────────────────────────────────
