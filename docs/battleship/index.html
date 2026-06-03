@@ -117,6 +117,12 @@
         .fleet-dot.intact { background: var(--accent); opacity: .7; }
         .fleet-dot.hit    { background: #f4a261; }
         .fleet-dot.sunk   { background: #e63946; }
+        /* pasek dla wroga — bez per-cell info */
+        .fleet-bar { width: 52px; height: 7px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; margin-left: 4px; flex-shrink: 0; }
+        .fleet-bar-fill { height: 100%; border-radius: 4px; transition: width .4s; }
+        .fleet-bar-fill.bar-hit  { background: #f4a261; }
+        .fleet-bar-fill.bar-sunk { background: #e63946; }
+        .fleet-bar-fill.bar-ok   { background: rgba(77,184,255,.25); }
 
         #screen-finish { text-align: center; padding: 60px 20px; }
         .finish-icon  { font-size: 5rem; margin-bottom: 16px; }
@@ -856,25 +862,26 @@ function renderFleetStatus(myShips, thShips, myShotSet, thShotSet) {
         const row = document.createElement('div');
         row.className = 'fleet-row';
 
+        const barPct = Math.round(hitCells / len * 100);
+        const barClass = sunk ? 'bar-sunk' : hitCells ? 'bar-hit' : 'bar-ok';
+        const bar = `<div class="fleet-bar"><div class="fleet-bar-fill ${barClass}" style="width:${sunk ? 100 : barPct}%"></div></div>`;
         if (sunk) {
-            const dots = Array(len).fill('<div class="fleet-dot sunk"></div>').join('');
             row.innerHTML = `
                 <div class="fleet-icon">🔥</div>
                 <div class="fleet-name sunk-name">${name} (${len})</div>
-                <div class="fleet-dots">${dots}</div>
+                ${bar}
                 <div class="fleet-stat sunk">zatopiony</div>`;
         } else if (hitCells > 0) {
-            // Wiemy że coś trafiliśmy, ale nie zatopiliśmy
             row.innerHTML = `
                 <div class="fleet-icon">💥</div>
                 <div class="fleet-name">${name} (${len})</div>
-                <div class="fleet-dots">${Array(len).fill(0).map((_,j) => `<div class="fleet-dot ${j < hitCells ? 'hit' : 'intact'}"></div>`).join('')}</div>
+                ${bar}
                 <div class="fleet-stat hit">trafiony ${hitCells}/${len}</div>`;
         } else {
             row.innerHTML = `
                 <div class="fleet-icon">❓</div>
                 <div class="fleet-name" style="color:var(--text-dim)">${name} (${len})</div>
-                <div class="fleet-dots">${Array(len).fill('<div class="fleet-dot intact" style="opacity:.2"></div>').join('')}</div>
+                ${bar}
                 <div class="fleet-stat">nieznany</div>`;
         }
         thEl.appendChild(row);
