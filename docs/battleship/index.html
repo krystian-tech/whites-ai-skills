@@ -78,18 +78,18 @@
         .panel { background: var(--surface); border-radius: 12px; padding: 20px; }
         .panel-title { font-size: .8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
         .ship-item {
-            display: flex; align-items: center; gap: 12px; padding: 10px 12px;
-            border-radius: 8px; cursor: pointer; margin-bottom: 6px;
+            display: flex; align-items: center; gap: 12px; padding: 8px 10px;
+            border-radius: 8px; cursor: pointer; margin-bottom: 5px;
             border: 2px solid transparent; transition: all .15s;
         }
         .ship-item:hover:not(.placed) { background: var(--accent-dim); }
         .ship-item.selected { border-color: var(--accent); background: var(--accent-dim); }
         .ship-item.placed { opacity: .35; cursor: not-allowed; }
         .ship-preview { display: flex; gap: 3px; }
-        .ship-dot { width: 13px; height: 13px; background: var(--accent); border-radius: 3px; }
-        .ship-label { font-size: .88rem; }
-        .controls { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-        .hint { font-size: .78rem; color: var(--text-dim); text-align: center; }
+        .ship-dot { width: 12px; height: 12px; background: var(--accent); border-radius: 2px; }
+        .ship-label { font-size: .82rem; }
+        .controls { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .hint { font-size: .75rem; color: var(--text-dim); text-align: center; }
 
         /* GRIDS */
         .grid-container { display: flex; flex-direction: column; align-items: center; }
@@ -102,20 +102,20 @@
         }
         .gl { display: flex; align-items: center; justify-content: center; font-size: .72rem; color: var(--text-dim); }
         .cell {
-            background: var(--cell); border-radius: 4px; cursor: default;
+            background: var(--cell); border-radius: 4px;
             display: flex; align-items: center; justify-content: center;
-            transition: background .1s; font-size: .9rem;
+            font-size: .9rem; cursor: default;
         }
-        .cell.clickable { cursor: crosshair; }
-        .cell.clickable:hover { background: rgba(77,184,255,.25); }
-        .cell.ship { background: var(--cell-ship); border: 1px solid rgba(77,184,255,.2); }
-        .cell.preview { background: rgba(77,184,255,.25); }
-        .cell.preview-bad { background: rgba(230,57,70,.3); }
-        .cell.hit { background: #5a0d13; }
-        .cell.hit::after { content: '💥'; }
-        .cell.miss::after { content: '○'; color: rgba(77,184,255,.5); }
-        .cell.enemy-hit { background: #5a0d13; }
-        .cell.enemy-hit::after { content: '💥'; }
+        .cell.ship   { background: var(--cell-ship); border: 1px solid rgba(77,184,255,.2); }
+        .cell.preview { background: rgba(77,184,255,.25); cursor: crosshair; }
+        .cell.preview-bad { background: rgba(230,57,70,.3); cursor: not-allowed; }
+        .cell.hit    { background: #5a0d13; }
+        .cell.hit::after    { content: '💥'; }
+        .cell.miss::after   { content: '○'; color: rgba(77,184,255,.5); }
+        .cell.shootable { cursor: crosshair; }
+        .cell.shootable:hover { background: rgba(77,184,255,.25); }
+        .cell.enemy-hit  { background: #5a0d13; }
+        .cell.enemy-hit::after  { content: '💥'; }
         .cell.enemy-miss::after { content: '○'; color: rgba(77,184,255,.5); }
 
         /* GAME */
@@ -124,16 +124,16 @@
             text-align: center; font-size: 1.05rem; font-weight: 600; border: 2px solid transparent;
         }
         .status-bar.my-turn { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-        .status-bar.wait { border-color: var(--border); color: var(--text-dim); }
+        .status-bar.wait    { border-color: var(--border);  color: var(--text-dim); }
         .game-grids { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
         .ships-left { text-align: center; margin-top: 10px; font-size: .85rem; color: var(--text-dim); }
         .ships-left strong { color: var(--text); }
 
         /* FINISH */
         #screen-finish { text-align: center; padding: 60px 20px; }
-        .finish-icon { font-size: 5rem; margin-bottom: 16px; }
+        .finish-icon  { font-size: 5rem; margin-bottom: 16px; }
         .finish-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; }
-        .finish-title.win { color: var(--accent); }
+        .finish-title.win  { color: var(--accent); }
         .finish-title.lose { color: var(--hit); }
         .finish-sub { color: var(--text-dim); margin-bottom: 32px; }
 
@@ -262,20 +262,24 @@ const fbApp = initializeApp({
 });
 const db = getDatabase(fbApp);
 
-// ── Constants ──────────────────────────────────────────────
+// ── Klasyczne polskie statki: 1×4, 2×3, 3×2, 4×1 ──────────
 const SHIPS = [
-    { name: 'Lotniskowiec', len: 5 },
-    { name: 'Pancernik',    len: 4 },
-    { name: 'Krążownik',    len: 3 },
-    { name: 'Krążownik',    len: 3 },
-    { name: 'Niszczyciel',  len: 2 },
+    { name: 'Pancernik',       len: 4 },
+    { name: 'Krążownik',       len: 3 },
+    { name: 'Krążownik',       len: 3 },
+    { name: 'Niszczyciel',     len: 2 },
+    { name: 'Niszczyciel',     len: 2 },
+    { name: 'Niszczyciel',     len: 2 },
+    { name: 'Kuter',           len: 1 },
+    { name: 'Kuter',           len: 1 },
+    { name: 'Kuter',           len: 1 },
+    { name: 'Kuter',           len: 1 },
 ];
 const COLS = 'ABCDEFGHIJ';
 
 // ── State ──────────────────────────────────────────────────
 let roomId = null, me = null, them = null;
-let placed = [], selShip = null, horiz = true;
-let hoverR = -1, hoverC = -1;
+let placed = [], selShip = 0, horiz = true;
 let gameUnsub = null, placementUnsub = null;
 
 // ── Helpers ────────────────────────────────────────────────
@@ -316,7 +320,7 @@ const canPlace = (row, col, len, h, existing) => {
     return true;
 };
 
-const shipSet = ships => {
+const makeShipSet = ships => {
     const s = new Set();
     ships.forEach(sh => getCells(sh.row, sh.col, sh.len, sh.h).forEach(([r,c]) => s.add(`${r},${c}`)));
     return s;
@@ -333,13 +337,17 @@ const desShips = str => !str ? [] : str.split(';').filter(Boolean).map(s => {
 const serShots = arr => arr.map(([r,c]) => `${r},${c}`).join(';');
 const desShots = str => !str ? [] : str.split(';').filter(Boolean).map(s => s.split(',').map(Number));
 
-// ── Grid builder ───────────────────────────────────────────
-function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(),
-    enemyShipSet=null, isEnemy=false,
-    previewSet=null, previewOk=true,
-    onCellClick=null, onEnter=null, onLeave=null } = {}) {
+// ── Grid builder (static — no hover rebuild) ───────────────
+function buildGrid(el, opts = {}) {
+    const {
+        myShipSet = new Set(), myShotSet = new Set(),
+        enemyShipSet = null, isEnemy = false,
+        onCellClick = null,
+    } = opts;
+
     el.innerHTML = '';
 
+    // corner + column labels
     el.appendChild(Object.assign(document.createElement('div'), {className:'gl'}));
     for (let c = 0; c < 10; c++)
         el.appendChild(Object.assign(document.createElement('div'), {className:'gl', textContent: COLS[c]}));
@@ -350,33 +358,118 @@ function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(),
             const key = `${r},${c}`;
             const cell = document.createElement('div');
             cell.className = 'cell';
+            cell.dataset.r = r;
+            cell.dataset.c = c;
 
             if (isEnemy) {
                 const shot = myShotSet.has(key);
-                const hit  = shot && enemyShipSet.has(key);
-                if (hit) cell.classList.add('enemy-hit');
+                if (shot && enemyShipSet.has(key)) cell.classList.add('enemy-hit');
                 else if (shot) cell.classList.add('enemy-miss');
                 else if (onCellClick) {
-                    cell.classList.add('clickable');
+                    cell.classList.add('shootable');
                     cell.onclick = () => onCellClick(r, c);
                 }
             } else {
-                if (previewSet?.has(key)) {
-                    cell.classList.add(previewOk ? 'preview' : 'preview-bad');
-                } else if (myShipSet.has(key) && myShotSet.has(key)) {
-                    cell.classList.add('hit');
-                } else if (myShipSet.has(key)) {
-                    cell.classList.add('ship');
-                } else if (myShotSet.has(key)) {
-                    cell.classList.add('miss');
-                }
-                if (onEnter) cell.onmouseenter = () => onEnter(r, c);
-                if (onLeave) cell.onmouseleave = onLeave;
-                if (onCellClick) { cell.classList.add('clickable'); cell.onclick = () => onCellClick(r, c); }
+                const isShip = myShipSet.has(key);
+                const wasShot = myShotSet.has(key);
+                if (isShip && wasShot) cell.classList.add('hit');
+                else if (isShip) cell.classList.add('ship');
+                else if (wasShot) cell.classList.add('miss');
             }
             el.appendChild(cell);
         }
     }
+}
+
+// ── Placement grid (separate — uses mousemove delegation) ──
+let placementEl = null;
+
+function initPlacementGrid() {
+    placementEl = document.getElementById('placement-grid');
+    placementEl.innerHTML = '';
+
+    // corner + column labels
+    placementEl.appendChild(Object.assign(document.createElement('div'), {className:'gl'}));
+    for (let c = 0; c < 10; c++)
+        placementEl.appendChild(Object.assign(document.createElement('div'), {className:'gl', textContent: COLS[c]}));
+
+    for (let r = 0; r < 10; r++) {
+        placementEl.appendChild(Object.assign(document.createElement('div'), {className:'gl', textContent: r+1}));
+        for (let c = 0; c < 10; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.r = r;
+            cell.dataset.c = c;
+            placementEl.appendChild(cell);
+        }
+    }
+
+    placementEl.addEventListener('mousemove', onPlacementHover);
+    placementEl.addEventListener('mouseleave', onPlacementLeave);
+    placementEl.addEventListener('click', onPlacementClick);
+}
+
+function getPlacementCell(r, c) {
+    return placementEl.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+}
+
+function refreshPlacementClasses() {
+    const existing = placed.filter(Boolean);
+    const occupied = makeShipSet(existing);
+    for (let r = 0; r < 10; r++) {
+        for (let c = 0; c < 10; c++) {
+            const cell = getPlacementCell(r, c);
+            if (!cell) continue;
+            const key = `${r},${c}`;
+            cell.className = 'cell';
+            if (occupied.has(key)) cell.classList.add('ship');
+        }
+    }
+}
+
+function showPreview(hR, hC) {
+    refreshPlacementClasses();
+    if (selShip === null || placed[selShip] !== undefined) return;
+    const existing = placed.filter(Boolean);
+    const previewCells = getCells(hR, hC, SHIPS[selShip].len, horiz);
+    const ok = canPlace(hR, hC, SHIPS[selShip].len, horiz, existing);
+    for (const [r, c] of previewCells) {
+        if (r < 0 || r > 9 || c < 0 || c > 9) continue;
+        const cell = getPlacementCell(r, c);
+        if (!cell) continue;
+        cell.classList.remove('ship');
+        cell.classList.add(ok ? 'preview' : 'preview-bad');
+    }
+}
+
+function onPlacementHover(e) {
+    const cell = e.target.closest('[data-r]');
+    if (!cell) return;
+    showPreview(+cell.dataset.r, +cell.dataset.c);
+}
+
+function onPlacementLeave() {
+    refreshPlacementClasses();
+}
+
+function onPlacementClick(e) {
+    const cell = e.target.closest('[data-r]');
+    if (!cell) return;
+    const r = +cell.dataset.r, c = +cell.dataset.c;
+    if (selShip === null || placed[selShip] !== undefined) return;
+    const existing = placed.filter(Boolean);
+    if (!canPlace(r, c, SHIPS[selShip].len, horiz, existing)) {
+        toast('❌ Nie można tu postawić statku');
+        return;
+    }
+    placed[selShip] = { row: r, col: c, len: SHIPS[selShip].len, h: horiz };
+    // auto-select next unplaced ship
+    const next = SHIPS.findIndex((_, i) => placed[i] === undefined);
+    selShip = next === -1 ? null : next;
+    renderShipList();
+    refreshPlacementClasses();
+    showPreview(r, c);
+    document.getElementById('btn-ready').disabled = placed.filter(Boolean).length < SHIPS.length;
 }
 
 // ── HOME ───────────────────────────────────────────────────
@@ -384,6 +477,7 @@ window.toggleJoin = () => document.getElementById('join-form').classList.toggle(
 
 window.createGame = async () => {
     roomId = randId(); me = 'p1'; them = 'p2';
+    sessionStorage.setItem('role_' + roomId, 'p1');
     await set(ref(db, `games/${roomId}`), {
         status: 'waiting',
         p1Ships: '', p2Ships: '',
@@ -403,13 +497,42 @@ window.createGame = async () => {
 window.joinGame = async () => {
     const code = document.getElementById('room-input').value.trim().toUpperCase();
     if (code.length !== 6) { toast('Wpisz 6-znakowy kod'); return; }
+
     const snap = await get(ref(db, `games/${code}`));
     if (!snap.exists()) { toast('❌ Nie znaleziono pokoju'); return; }
-    if (snap.val().status !== 'waiting') { toast('❌ Gra już trwa lub się skończyła'); return; }
-    roomId = code; me = 'p2'; them = 'p1';
-    await update(ref(db, `games/${roomId}`), { status: 'placing' });
-    history.replaceState(null, '', `?room=${roomId}`);
-    goPlacement();
+
+    const d = snap.val();
+    const savedRole = sessionStorage.getItem('role_' + code);
+
+    // Odtworzenie sesji — gracz wraca do swojej gry
+    if (savedRole) {
+        roomId = code;
+        me = savedRole; them = me === 'p1' ? 'p2' : 'p1';
+        history.replaceState(null, '', `?room=${roomId}`);
+        if (d.status === 'playing' || d.status === 'finished') { goGame(); return; }
+        if (d.status === 'placing') { goPlacement(); return; }
+    }
+
+    // Nowy gracz dołącza
+    if (d.status === 'waiting') {
+        roomId = code; me = 'p2'; them = 'p1';
+        sessionStorage.setItem('role_' + roomId, 'p2');
+        await update(ref(db, `games/${roomId}`), { status: 'placing' });
+        history.replaceState(null, '', `?room=${roomId}`);
+        goPlacement();
+        return;
+    }
+
+    // Gracz 2 jeszcze nie skończył ustawiania — pozwól dołączyć ponownie
+    if (d.status === 'placing' && !d.p2Ships) {
+        roomId = code; me = 'p2'; them = 'p1';
+        sessionStorage.setItem('role_' + roomId, 'p2');
+        history.replaceState(null, '', `?room=${roomId}`);
+        goPlacement();
+        return;
+    }
+
+    toast('❌ Ta gra jest już zajęta — poproś o nowy link');
 };
 
 window.copyLink = () => {
@@ -419,10 +542,12 @@ window.copyLink = () => {
 
 // ── PLACEMENT ──────────────────────────────────────────────
 function goPlacement() {
-    placed = []; selShip = 0; horiz = true; hoverR = -1; hoverC = -1;
-    renderShipList(); renderPlacementGrid();
+    placed = []; selShip = 0; horiz = true;
+    renderShipList();
     showScreen('screen-placement');
+    initPlacementGrid();
 
+    if (placementUnsub) { placementUnsub(); placementUnsub = null; }
     placementUnsub = onValue(ref(db, `games/${roomId}/status`), snap => {
         if (snap.val() === 'playing') {
             if (placementUnsub) { placementUnsub(); placementUnsub = null; }
@@ -440,48 +565,21 @@ function renderShipList() {
         div.className = `ship-item${isPlaced?' placed':''}${selShip===i?' selected':''}`;
         div.innerHTML = `<div class="ship-preview">${'<div class="ship-dot"></div>'.repeat(ship.len)}</div>
                          <div class="ship-label">${ship.name} (${ship.len})</div>`;
-        if (!isPlaced) div.onclick = () => { selShip = i; renderShipList(); renderPlacementGrid(hoverR, hoverC); };
+        if (!isPlaced) div.onclick = () => { selShip = i; renderShipList(); };
         el.appendChild(div);
     });
-}
-
-function renderPlacementGrid(hR=-1, hC=-1) {
-    const existing = placed.filter(Boolean);
-    const mySet = shipSet(existing);
-    let previewSet = null, previewOk = true;
-    if (selShip !== null && placed[selShip] === undefined && hR >= 0) {
-        previewOk = canPlace(hR, hC, SHIPS[selShip].len, horiz, existing);
-        previewSet = new Set(getCells(hR, hC, SHIPS[selShip].len, horiz).map(([r,c]) => `${r},${c}`));
-    }
-    buildGrid(document.getElementById('placement-grid'), {
-        myShipSet: mySet, previewSet, previewOk,
-        onEnter: (r, c) => { hoverR=r; hoverC=c; renderPlacementGrid(r,c); },
-        onLeave: () => { hoverR=-1; hoverC=-1; renderPlacementGrid(); },
-        onCellClick: (r, c) => placeShip(r, c),
-    });
-}
-
-function placeShip(row, col) {
-    if (selShip === null || placed[selShip] !== undefined) return;
-    const existing = placed.filter(Boolean);
-    if (!canPlace(row, col, SHIPS[selShip].len, horiz, existing)) { toast('❌ Nie można tu postawić statku'); return; }
-    placed[selShip] = { row, col, len: SHIPS[selShip].len, h: horiz };
-    const next = SHIPS.findIndex((_, i) => placed[i] === undefined);
-    selShip = next === -1 ? null : next;
-    renderShipList(); renderPlacementGrid();
-    document.getElementById('btn-ready').disabled = placed.filter(Boolean).length < SHIPS.length;
 }
 
 window.rotateShip = () => {
     horiz = !horiz;
     toast(horiz ? '→ Poziomo' : '↓ Pionowo');
-    renderPlacementGrid(hoverR, hoverC);
 };
 
 window.clearShips = () => {
     placed = []; selShip = 0;
     document.getElementById('btn-ready').disabled = true;
-    renderShipList(); renderPlacementGrid();
+    renderShipList();
+    refreshPlacementClasses();
 };
 
 window.setReady = async () => {
@@ -509,17 +607,17 @@ function goGame() {
         if (!d) return;
         if (d.status === 'finished') { showFinish(d.winner); return; }
 
-        const myShips   = desShips(d[`${me}Ships`]);
-        const thShips   = desShips(d[`${them}Ships`]);
-        const myShots   = desShots(d[`${me}Shots`]);
-        const thShots   = desShots(d[`${them}Shots`]);
+        const myShips  = desShips(d[`${me}Ships`]);
+        const thShips  = desShips(d[`${them}Ships`]);
+        const myShots  = desShots(d[`${me}Shots`]);
+        const thShots  = desShots(d[`${them}Shots`]);
 
-        const mySet  = shipSet(myShips);
-        const thSet  = shipSet(thShips);
+        const mySet    = makeShipSet(myShips);
+        const thSet    = makeShipSet(thShips);
         const myShotSet = new Set(myShots.map(([r,c]) => `${r},${c}`));
         const thShotSet = new Set(thShots.map(([r,c]) => `${r},${c}`));
+        const isMyTurn  = d.turn === me;
 
-        const isMyTurn = d.turn === me;
         const sb = document.getElementById('status-bar');
         sb.textContent = isMyTurn ? '🎯 Twoja kolej — strzelaj!' : '⏳ Tura przeciwnika...';
         sb.className = `status-bar ${isMyTurn ? 'my-turn' : 'wait'}`;
@@ -535,7 +633,7 @@ function goGame() {
 
         const myAlive = countAlive(myShips, thShotSet);
         const thAlive = countAlive(thShips, myShotSet);
-        document.getElementById('my-ships-left').innerHTML = `Twoje statki: <strong>${myAlive}</strong> / ${SHIPS.length}`;
+        document.getElementById('my-ships-left').innerHTML   = `Twoje statki: <strong>${myAlive}</strong> / ${SHIPS.length}`;
         document.getElementById('enemy-ships-left').innerHTML = `Statki wroga: <strong>${thAlive}</strong> / ${SHIPS.length}`;
     });
 }
@@ -550,8 +648,7 @@ async function shoot(row, col) {
     if (myShots.some(([r,c]) => `${r},${c}` === key)) return;
 
     myShots.push([row, col]);
-    const thShips = desShips(d[`${them}Ships`]);
-    const thSet = shipSet(thShips);
+    const thSet = makeShipSet(desShips(d[`${them}Ships`]));
     const isHit = thSet.has(key);
     const myShotSet = new Set(myShots.map(([r,c]) => `${r},${c}`));
     const allSunk = [...thSet].every(k => myShotSet.has(k));
@@ -582,8 +679,9 @@ function showFinish(winner) {
 }
 
 window.playAgain = () => {
+    if (roomId) sessionStorage.removeItem('role_' + roomId);
     roomId = null; me = null; them = null;
-    placed = []; selShip = null; horiz = true; gameUnsub = null;
+    placed = []; selShip = 0; horiz = true; gameUnsub = null;
     history.replaceState(null, '', location.pathname);
     showScreen('screen-home');
 };
@@ -599,8 +697,20 @@ document.addEventListener('keydown', e => {
 // ── AUTO-JOIN FROM URL ──────────────────────────────────────
 const urlRoom = new URLSearchParams(location.search).get('room');
 if (urlRoom) {
-    document.getElementById('room-input').value = urlRoom.toUpperCase();
-    document.getElementById('join-form').classList.add('show');
+    const savedRole = sessionStorage.getItem('role_' + urlRoom);
+    if (savedRole) {
+        // Odtworzenie sesji bez ekranu home
+        roomId = urlRoom; me = savedRole; them = me === 'p1' ? 'p2' : 'p1';
+        get(ref(db, `games/${roomId}`)).then(snap => {
+            if (!snap.exists()) { showScreen('screen-home'); return; }
+            const st = snap.val().status;
+            if (st === 'playing' || st === 'finished') goGame();
+            else if (st === 'placing' || st === 'waiting') goPlacement();
+        });
+    } else {
+        document.getElementById('room-input').value = urlRoom.toUpperCase();
+        document.getElementById('join-form').classList.add('show');
+    }
 }
 </script>
 </body>
