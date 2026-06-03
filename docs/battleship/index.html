@@ -90,8 +90,8 @@
         .cell.enemy-miss::after { content: '○'; color: rgba(77,184,255,.5); }
         .cell.sunk { background: #3d0208; border: 1px solid #8b0000; }
         .cell.sunk::after { content: '🔥'; }
-        .cell.dead-zone { background: #0d1f30; border: 1px solid rgba(77,184,255,.08); cursor: not-allowed; }
-        .cell.dead-zone::after { content: '×'; color: rgba(77,184,255,.2); font-size: .7rem; }
+        .cell.marked { background: #0d1c2e; }
+        .cell.marked::after { content: '×'; color: rgba(77,184,255,.4); font-size: .85rem; }
 
         .status-bar { padding: 14px 20px; border-radius: 10px; margin-bottom: 24px; text-align: center; font-size: 1.05rem; font-weight: 600; border: 2px solid transparent; }
         .status-bar.my-turn { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
@@ -438,20 +438,30 @@ function computeSunkCells(ships, shotSet) {
     return s;
 }
 
-// Pola sąsiadujące z zatopionymi statkami (na pewno puste)
-function computeDeadZone(ships, shotSet) {
-    const dead = new Set();
-    ships.forEach(sh => {
-        if (!sh.cells.every(([r,c]) => shotSet.has(`${r},${c}`))) return; // tylko zatopione
-        sh.cells.forEach(([r,c]) => {
-            for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
-                const nr = r+dr, nc = c+dc;
-                if (nr < 0 || nr > 9 || nc < 0 || nc > 9) continue;
-                dead.add(`${nr},${nc}`);
-            }
-        });
+// Ręczne oznaczenia gracza na mapie wroga (lokalne, nie sync)
+let myMarks = new Set();
+let lastGameData = null;
+
+function toggleMark(r, c) {
+    const key = `${r},${c}`;
+    if (myMarks.has(key)) myMarks.delete(key);
+    else myMarks.add(key);
+}
+
+function redrawEnemyGrid() {
+    if (!lastGameData) return;
+    const d = lastGameData;
+    const thShips  = desShips(d[`${them}Ships`]);
+    const myShots  = desShots(d[`${me}Shots`]);
+    const thShotSet = new Set(desShots(d[`${them}Shots`]).map(([r,c]) => `${r},${c}`));
+    const thSet    = makeShipSet(thShips);
+    const myShotSet = new Set(myShots.map(([r,c]) => `${r},${c}`));
+    const thSunkSet = computeSunkCells(thShips, myShotSet);
+    const isMyTurn  = d.turn === me;
+    buildGrid(document.getElementById('enemy-grid'), {
+        myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, isEnemy: true,
+        onCellClick: isMyTurn ? (r,c) => shoot(r,c) : null,
     });
-    return dead;
 }
 
 // ── State ──────────────────────────────────────────────────
@@ -514,7 +524,7 @@ const serShots = arr => arr.map(([r,c]) => `${r},${c}`).join(';');
 const desShots = str => !str ? [] : str.split(';').filter(Boolean).map(s => s.split(',').map(Number));
 
 // ── Grid builder (game screen) ─────────────────────────────
-function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, sunkSet=new Set(), deadZone=new Set(), isEnemy=false, onCellClick=null } = {}) {
+function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, sunkSet=new Set(), isEnemy=false, onCellClick=null } = {}) {
     el.innerHTML = '';
     el.appendChild(Object.assign(document.createElement('div'), {className:'gl'}));
     for (let c = 0; c < 10; c++)
@@ -528,11 +538,17 @@ function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=
             cell.dataset.r = r; cell.dataset.c = c;
             if (isEnemy) {
                 const shot = myShotSet.has(key);
-                if (sunkSet.has(key))                     cell.classList.add('sunk');
-                else if (shot && enemyShipSet.has(key))   cell.classList.add('enemy-hit');
-                else if (shot)                             cell.classList.add('enemy-miss');
-                else if (deadZone.has(key))               cell.classList.add('dead-zone');
-                else if (onCellClick) { cell.classList.add('shootable'); cell.onclick = () => onCellClick(r, c); }
+                if (sunkSet.has(key)) {
+                    cell.classList.add('sunk');
+                } else if (shot && enemyShipSet.has(key)) {
+                    cell.classList.add('enemy-hit');
+                } else if (shot) {
+                    cell.classList.add('enemy-miss');
+                } else {
+                    if (myMarks.has(key)) cell.classList.add('marked');
+                    if (onCellClick) { cell.classList.add('shootable'); cell.onclick = () => onCellClick(r, c); }
+                    cell.oncontextmenu = e => { e.preventDefault(); toggleMark(r, c); redrawEnemyGrid(); };
+                }
             } else {
                 const isShip = myShipSet.has(key), wasShot = myShotSet.has(key);
                 if (sunkSet.has(key))        cell.classList.add('sunk');
@@ -800,13 +816,13 @@ function goGame() {
         sb.textContent = isMyTurn ? '🎯 Twoja kolej — strzelaj!' : '⏳ Tura przeciwnika...';
         sb.className = `status-bar ${isMyTurn ? 'my-turn' : 'wait'}`;
 
+        lastGameData = d;
         const mySunkSet = computeSunkCells(myShips, thShotSet);
         const thSunkSet = computeSunkCells(thShips, myShotSet);
-        const thDeadZone = computeDeadZone(thShips, myShotSet);
 
         buildGrid(document.getElementById('my-grid'), { myShipSet: mySet, myShotSet: thShotSet, sunkSet: mySunkSet });
         buildGrid(document.getElementById('enemy-grid'), {
-            myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, deadZone: thDeadZone, isEnemy: true,
+            myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, isEnemy: true,
             onCellClick: isMyTurn ? (r,c) => shoot(r,c) : null,
         });
 
@@ -943,6 +959,7 @@ window.playAgain = () => {
     if (roomId) sessionStorage.removeItem('role_' + roomId);
     roomId = null; me = null; them = null;
     placed = []; selShip = 0; shapeIdx = 0; gameUnsub = null;
+    myMarks = new Set(); lastGameData = null;
     history.replaceState(null, '', location.pathname);
     showScreen('screen-home');
 };
