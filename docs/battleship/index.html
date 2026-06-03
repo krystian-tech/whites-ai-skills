@@ -93,6 +93,24 @@
         .ships-left { text-align: center; margin-top: 10px; font-size: .85rem; color: var(--text-dim); }
         .ships-left strong { color: var(--text); }
 
+        .fleet-status { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+        .fleet-panel { background: var(--surface); border-radius: 10px; padding: 14px 16px; }
+        .fleet-panel-title { font-size: .75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 10px; }
+        .fleet-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .82rem; }
+        .fleet-row:last-child { border-bottom: none; }
+        .fleet-icon { width: 18px; text-align: center; font-size: .9rem; flex-shrink: 0; }
+        .fleet-name { flex: 1; color: var(--text); }
+        .fleet-name.sunk-name { text-decoration: line-through; color: var(--text-dim); }
+        .fleet-stat { color: var(--text-dim); font-size: .75rem; white-space: nowrap; }
+        .fleet-stat.hit  { color: #f4a261; }
+        .fleet-stat.sunk { color: #e63946; }
+        .fleet-stat.ok   { color: #52b788; }
+        .fleet-dots { display: flex; gap: 2px; margin-left: 4px; }
+        .fleet-dot { width: 8px; height: 8px; border-radius: 1px; }
+        .fleet-dot.intact { background: var(--accent); opacity: .7; }
+        .fleet-dot.hit    { background: #f4a261; }
+        .fleet-dot.sunk   { background: #e63946; }
+
         #screen-finish { text-align: center; padding: 60px 20px; }
         .finish-icon  { font-size: 5rem; margin-bottom: 16px; }
         .finish-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; }
@@ -182,6 +200,16 @@
                 <div class="grid-title">🎯 Wody przeciwnika</div>
                 <div class="grid-container"><div class="grid" id="enemy-grid"></div></div>
                 <div class="ships-left" id="enemy-ships-left"></div>
+            </div>
+        </div>
+        <div class="fleet-status">
+            <div class="fleet-panel">
+                <div class="fleet-panel-title">🛡️ Moja flota</div>
+                <div id="my-fleet-list"></div>
+            </div>
+            <div class="fleet-panel">
+                <div class="fleet-panel-title">🎯 Flota wroga (znane)</div>
+                <div id="enemy-fleet-list"></div>
             </div>
         </div>
     </div>
@@ -650,6 +678,78 @@ function goGame() {
 
         document.getElementById('my-ships-left').innerHTML   = `Twoje statki: <strong>${countAlive(myShips, thShotSet)}</strong> / ${SHIPS.length}`;
         document.getElementById('enemy-ships-left').innerHTML = `Statki wroga: <strong>${countAlive(thShips, myShotSet)}</strong> / ${SHIPS.length}`;
+
+        renderFleetStatus(myShips, thShips, myShotSet, thShotSet);
+    });
+}
+
+function renderFleetStatus(myShips, thShips, myShotSet, thShotSet) {
+    const myEl = document.getElementById('my-fleet-list');
+    const thEl = document.getElementById('enemy-fleet-list');
+    if (!myEl || !thEl) return;
+    myEl.innerHTML = ''; thEl.innerHTML = '';
+
+    // Moja flota — pełny stan każdego statku
+    myShips.forEach((ship, i) => {
+        const len = ship.cells.length;
+        const name = SHIP_NAMES[len] || `${len}-masztowiec`;
+        const hitCells = ship.cells.filter(([r,c]) => thShotSet.has(`${r},${c}`)).length;
+        const sunk = hitCells === len;
+
+        const row = document.createElement('div');
+        row.className = 'fleet-row';
+
+        // Miniaturka komórek
+        const dots = ship.cells.map(([r,c]) => {
+            const hit = thShotSet.has(`${r},${c}`);
+            return `<div class="fleet-dot ${sunk ? 'sunk' : hit ? 'hit' : 'intact'}"></div>`;
+        }).join('');
+
+        let statClass, statText;
+        if (sunk)          { statClass = 'sunk'; statText = 'zatopiony'; }
+        else if (hitCells) { statClass = 'hit';  statText = `trafiony ${hitCells}/${len}`; }
+        else               { statClass = 'ok';   statText = 'nienaruszony'; }
+
+        row.innerHTML = `
+            <div class="fleet-icon">${sunk ? '🔥' : hitCells ? '💥' : '⬜'}</div>
+            <div class="fleet-name${sunk ? ' sunk-name' : ''}">${name} (${len})</div>
+            <div class="fleet-dots">${dots}</div>
+            <div class="fleet-stat ${statClass}">${statText}</div>`;
+        myEl.appendChild(row);
+    });
+
+    // Flota wroga — tylko zatopione z nazwą, reszta jako "?"
+    thShips.forEach((ship, i) => {
+        const len = ship.cells.length;
+        const name = SHIP_NAMES[len] || `${len}-masztowiec`;
+        const sunk = ship.cells.every(([r,c]) => myShotSet.has(`${r},${c}`));
+        const hitCells = ship.cells.filter(([r,c]) => myShotSet.has(`${r},${c}`)).length;
+
+        const row = document.createElement('div');
+        row.className = 'fleet-row';
+
+        if (sunk) {
+            const dots = Array(len).fill('<div class="fleet-dot sunk"></div>').join('');
+            row.innerHTML = `
+                <div class="fleet-icon">🔥</div>
+                <div class="fleet-name sunk-name">${name} (${len})</div>
+                <div class="fleet-dots">${dots}</div>
+                <div class="fleet-stat sunk">zatopiony</div>`;
+        } else if (hitCells > 0) {
+            // Wiemy że coś trafiliśmy, ale nie zatopiliśmy
+            row.innerHTML = `
+                <div class="fleet-icon">💥</div>
+                <div class="fleet-name">${name} (${len})</div>
+                <div class="fleet-dots">${Array(len).fill(0).map((_,j) => `<div class="fleet-dot ${j < hitCells ? 'hit' : 'intact'}"></div>`).join('')}</div>
+                <div class="fleet-stat hit">trafiony ${hitCells}/${len}</div>`;
+        } else {
+            row.innerHTML = `
+                <div class="fleet-icon">❓</div>
+                <div class="fleet-name" style="color:var(--text-dim)">${name} (${len})</div>
+                <div class="fleet-dots">${Array(len).fill('<div class="fleet-dot intact" style="opacity:.2"></div>').join('')}</div>
+                <div class="fleet-stat">nieznany</div>`;
+        }
+        thEl.appendChild(row);
     });
 }
 
