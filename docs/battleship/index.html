@@ -81,6 +81,8 @@
         .cell.enemy-hit  { background: #5a0d13; }
         .cell.enemy-hit::after  { content: '💥'; }
         .cell.enemy-miss::after { content: '○'; color: rgba(77,184,255,.5); }
+        .cell.sunk { background: #3d0208; border: 1px solid #8b0000; }
+        .cell.sunk::after { content: '🔥'; }
 
         .status-bar { padding: 14px 20px; border-radius: 10px; margin-bottom: 24px; text-align: center; font-size: 1.05rem; font-weight: 600; border: 2px solid transparent; }
         .status-bar.my-turn { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
@@ -261,6 +263,16 @@ const SHIPS = [
     { name: 'Kuter',       len: 1 },
 ];
 const COLS = 'ABCDEFGHIJ';
+const SHIP_NAMES = { 4: 'Pancernik', 3: 'Krążownik', 2: 'Niszczyciel', 1: 'Kuter' };
+
+function computeSunkCells(ships, shotSet) {
+    const s = new Set();
+    ships.forEach(sh => {
+        if (sh.cells.every(([r,c]) => shotSet.has(`${r},${c}`)))
+            sh.cells.forEach(([r,c]) => s.add(`${r},${c}`));
+    });
+    return s;
+}
 
 // ── State ──────────────────────────────────────────────────
 let roomId = null, me = null, them = null;
@@ -322,7 +334,7 @@ const serShots = arr => arr.map(([r,c]) => `${r},${c}`).join(';');
 const desShots = str => !str ? [] : str.split(';').filter(Boolean).map(s => s.split(',').map(Number));
 
 // ── Grid builder (game screen) ─────────────────────────────
-function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, isEnemy=false, onCellClick=null } = {}) {
+function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=null, sunkSet=new Set(), isEnemy=false, onCellClick=null } = {}) {
     el.innerHTML = '';
     el.appendChild(Object.assign(document.createElement('div'), {className:'gl'}));
     for (let c = 0; c < 10; c++)
@@ -336,14 +348,16 @@ function buildGrid(el, { myShipSet=new Set(), myShotSet=new Set(), enemyShipSet=
             cell.dataset.r = r; cell.dataset.c = c;
             if (isEnemy) {
                 const shot = myShotSet.has(key);
-                if (shot && enemyShipSet.has(key)) cell.classList.add('enemy-hit');
-                else if (shot) cell.classList.add('enemy-miss');
+                if (sunkSet.has(key))                     cell.classList.add('sunk');
+                else if (shot && enemyShipSet.has(key))   cell.classList.add('enemy-hit');
+                else if (shot)                             cell.classList.add('enemy-miss');
                 else if (onCellClick) { cell.classList.add('shootable'); cell.onclick = () => onCellClick(r, c); }
             } else {
                 const isShip = myShipSet.has(key), wasShot = myShotSet.has(key);
-                if (isShip && wasShot) cell.classList.add('hit');
-                else if (isShip) cell.classList.add('ship');
-                else if (wasShot) cell.classList.add('miss');
+                if (sunkSet.has(key))        cell.classList.add('sunk');
+                else if (isShip && wasShot)  cell.classList.add('hit');
+                else if (isShip)             cell.classList.add('ship');
+                else if (wasShot)            cell.classList.add('miss');
             }
             el.appendChild(cell);
         }
@@ -591,9 +605,12 @@ function goGame() {
         sb.textContent = isMyTurn ? '🎯 Twoja kolej — strzelaj!' : '⏳ Tura przeciwnika...';
         sb.className = `status-bar ${isMyTurn ? 'my-turn' : 'wait'}`;
 
-        buildGrid(document.getElementById('my-grid'), { myShipSet: mySet, myShotSet: thShotSet });
+        const mySunkSet = computeSunkCells(myShips, thShotSet);
+        const thSunkSet = computeSunkCells(thShips, myShotSet);
+
+        buildGrid(document.getElementById('my-grid'), { myShipSet: mySet, myShotSet: thShotSet, sunkSet: mySunkSet });
         buildGrid(document.getElementById('enemy-grid'), {
-            myShotSet, enemyShipSet: thSet, isEnemy: true,
+            myShotSet, enemyShipSet: thSet, sunkSet: thSunkSet, isEnemy: true,
             onCellClick: isMyTurn ? (r,c) => shoot(r,c) : null,
         });
 
@@ -618,9 +635,19 @@ async function shoot(row, col) {
     if (allSunk) { upd.status = 'finished'; upd.winner = me; }
     else if (!isHit) upd.turn = them;
     await update(ref(db, `games/${roomId}`), upd);
-    if (allSunk) toast('🏆 Zatopiłeś wszystkie statki!', 4000);
-    else if (isHit) toast('💥 Trafienie! Strzelasz ponownie!');
-    else toast('💦 Pudło!');
+    if (allSunk) {
+        toast('🏆 Zatopiłeś wszystkie statki!', 4000);
+    } else if (isHit) {
+        const thShipsArr = desShips(d[`${them}Ships`]);
+        const hitShip = thShipsArr.find(sh => sh.cells.some(([r,c]) => `${r},${c}` === key));
+        const len = hitShip.cells.length;
+        const name = SHIP_NAMES[len] || `${len}-masztowiec`;
+        const shipSunk = hitShip.cells.every(([r,c]) => myShotSet.has(`${r},${c}`));
+        if (shipSunk) toast(`🔥 Zatopiony! ${name} (${len})`, 3500);
+        else toast(`💥 Trafiony, niezatopiony — ${name} (${len})`);
+    } else {
+        toast('💦 Pudło!');
+    }
 }
 
 // ── FINISH ──────────────────────────────────────────────────
