@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polsat Plus — Status SEO/Content | 9.06.2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #2c2c2c; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { background: #1a1a2e; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 700; }
+    .header-left p { color: #a0a8c0; font-size: 13px; margin-top: 4px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .badge { background: #e53935; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .badge-blue { background: #1565c0; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .meeting-time { color: #fff; font-size: 20px; font-weight: 700; }
+    .meeting-time span { font-size: 13px; color: #a0a8c0; font-weight: 400; }
+    .section { background: #fff; border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 24px; }
+    .meta-item .label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-weight: 600; margin-top: 2px; font-size: 13px; }
+    .agenda-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .agenda-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: #f8f9fb; border-radius: 8px; border-left: 4px solid #1a1a2e; }
+    .agenda-num { font-size: 18px; font-weight: 800; color: #1a1a2e; min-width: 24px; }
+    .agenda-text { font-size: 13px; line-height: 1.5; }
+    .agenda-text strong { display: block; font-size: 14px; margin-bottom: 2px; }
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .process-card { border-radius: 8px; padding: 16px; border-left: 4px solid; }
+    .process-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .process-card ul { padding-left: 16px; font-size: 13px; line-height: 1.7; color: #444; }
+    .process-card .norm { margin-top: 10px; font-size: 12px; font-weight: 600; color: #555; background: rgba(0,0,0,0.06); display: inline-block; padding: 3px 8px; border-radius: 4px; }
+    .color-1 { background: #eef4ff; border-color: #3b82f6; }
+    .color-2 { background: #f0fdf4; border-color: #22c55e; }
+    .color-3 { background: #fff7ed; border-color: #f97316; }
+    .color-4 { background: #fdf4ff; border-color: #a855f7; }
+    .color-5 { background: #fef2f2; border-color: #e53935; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    .team-card { background: #f8f9fb; border-radius: 8px; padding: 12px 14px; }
+    .team-card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 4px; }
+    .team-card .name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+    .team-card .side { font-size: 11px; color: #888; margin-top: 2px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-avatar { width: 36px; height: 36px; background: #1a1a2e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .contact-info .cname { font-size: 13px; font-weight: 600; }
+    .contact-info .crole { font-size: 12px; color: #888; }
+    .contact-info .cemail { font-size: 11px; color: #3b82f6; margin-top: 2px; }
+    .alerts { display: flex; flex-direction: column; gap: 8px; }
+    .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; line-height: 1.5; }
+    .alert.warn { background: #fff8e1; color: #7a5c00; }
+    .alert.info { background: #e8f4fd; color: #1565c0; }
+    .alert.ok { background: #f0fdf4; color: #166534; }
+    .alert .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .link-item { display: flex; align-items: center; gap: 10px; background: #f8f9fb; border-radius: 7px; padding: 10px 12px; text-decoration: none; color: inherit; }
+    .link-item:hover { background: #eef4ff; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .link-label { font-size: 13px; font-weight: 600; }
+    .link-desc { font-size: 11px; color: #888; }
+    .footer { text-align: center; font-size: 11px; color: #bbb; margin-top: 24px; }
+    .highlight-box { background: #1a1a2e; color: #fff; border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
+    .highlight-box strong { color: #7dd3fc; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Polsat Plus (PLK)</h1>
+      <p>SEO · Content · GEO/AI · Video — Omówienie działań i plan na H2</p>
+    </div>
+    <div class="header-right">
+      <span class="badge-blue">STATUS MEETING</span>
+      <div class="meeting-time">14:00 <span>· dziś, 9 czerwca 2026</span></div>
+      <div style="color:#a0a8c0;font-size:11px;">Microsoft Teams · org. Aleksandra Sętorek</div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="section">
+    <div class="section-title">Agenda spotkania</div>
+    <ul class="agenda-list">
+      <li class="agenda-item">
+        <span class="agenda-num">1</span>
+        <div class="agenda-text">
+          <strong>Dotychczasowe osiągnięcia</strong>
+          Co zrealizowaliśmy od początku współpracy — SEO, content, GEO, video, quizy, infografiki
+        </div>
+      </li>
+      <li class="agenda-item">
+        <span class="agenda-num">2</span>
+        <div class="agenda-text">
+          <strong>Wnioski i rekomendacje</strong>
+          Co jeszcze trzeba dowieźć · co zmieniło priorytet przez ten czas · gdzie jesteśmy vs plan
+        </div>
+      </li>
+      <li class="agenda-item">
+        <span class="agenda-num">3</span>
+        <div class="agenda-text">
+          <strong>Plan na kolejne pół roku</strong>
+          Drugi ważny brand — Plush vs mniej zasobów po stronie PLK · alokacja · priorytety
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- META -->
+  <div class="section">
+    <div class="section-title">Informacje ogólne</div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Klient</div><div class="value">Polkomtel / Polsat Plus (PLK)</div></div>
+      <div class="meta-item"><div class="label">Branding</div><div class="value">Plus + Plush</div></div>
+      <div class="meta-item"><div class="label">PM Whites</div><div class="value">Krystian Stefaniuk</div></div>
+      <div class="meta-item"><div class="label">Specjalista SEO</div><div class="value">Rafał Kobylarczyk</div></div>
+      <div class="meta-item"><div class="label">Content</div><div class="value">Paulina Kotlarska · Dagmara Sagan</div></div>
+      <div class="meta-item"><div class="label">Video/Social</div><div class="value">Filip Kulisz</div></div>
+    </div>
+  </div>
+
+  <!-- CO DOWIEŹLIŚMY -->
+  <div class="section">
+    <div class="section-title">Co zrealizowaliśmy</div>
+    <div class="process-grid">
+
+      <div class="process-card color-1">
+        <h3>📝 Content — artykuły</h3>
+        <ul>
+          <li>~5 art./mies. na Plusie regularnie</li>
+          <li>~2 art./mies. na Polsat Box</li>
+          <li>Kwiecień: zmiana zakresu — 4 art. LP → 1 art. spec. + 2 grafiki</li>
+          <li>Akcepty treści dla Plusha (Paulina)</li>
+        </ul>
+        <span class="norm">⌀ 5/mies. Plus | 2/mies. Box</span>
+      </div>
+
+      <div class="process-card color-2">
+        <h3>🤖 GEO / LLM / SmartDom</h3>
+        <ul>
+          <li>Wytyczne GEO dla SmartDom dostarczone</li>
+          <li>Badanie white dog — obszar abonamentu</li>
+          <li>Weryfikacja rzetelności info o SmartDom w modelach AI</li>
+          <li>Plan komunikacji FAQ + PR dla SmartDom</li>
+          <li>Analiza bliskości semantycznej — czerwiec</li>
+        </ul>
+        <span class="norm">⏳ Czeka na wdrożenie po stronie PLK</span>
+      </div>
+
+      <div class="process-card color-3">
+        <h3>🔍 SEO techniczne</h3>
+        <ul>
+          <li>LP światłowodowe — stabilna/rosnąca pozycja</li>
+          <li>Promowanie LP w serwisach zewnętrznych</li>
+          <li>Analiza broken links (3xx/4xx) — gotowa → Jira</li>
+          <li>Wytyczne prędkości ładowania — gotowe (08.06)</li>
+          <li>Propozycja na czerwiec: audit 3xx/4xx całego serwisu</li>
+        </ul>
+        <span class="norm">⚠️ Ruch PLK idzie w dół — kontekst rynkowy</span>
+      </div>
+
+      <div class="process-card color-4">
+        <h3>🎬 Video i Quizy</h3>
+        <ul>
+          <li>5 quizów poprawionych i wysłanych do klienta</li>
+          <li>Quiz 7 — zaakceptowany</li>
+          <li>Quiz 6 — poprawki po uwagach Agnieszki (w toku)</li>
+          <li>Nowy format video (nowe oświetlenie, layout) — wysłany</li>
+          <li>Nowa koncepcja infografik (AI-promptowanie) — do feedbacku</li>
+        </ul>
+        <span class="norm">⏳ Czekamy na feedback klienta do video</span>
+      </div>
+
+      <div class="process-card color-5">
+        <h3>📊 Plush — strategia</h3>
+        <ul>
+          <li>Strategia SEO-contentowa w toku</li>
+          <li>Część techniczna i ogólna — w realizacji</li>
+          <li>Plan komunikacji GEO w opracowaniu</li>
+          <li>Testowy raport dla Plusha — ten tydzień</li>
+          <li>Spotkanie ws. pozycjonowania marki — środa 13:00</li>
+        </ul>
+        <span class="norm">📅 Spotkanie z komunikacją — środa 13:00</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OTWARTE SPRAWY -->
+  <div class="section">
+    <div class="section-title">Otwarte sprawy i pytania na spotkanie</div>
+    <div class="alerts">
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Video — czekamy na feedback do nowego formatu.</strong> Od decyzji klienta zależy cały dalszy harmonogram produkcji (kolejne filmy, scenariusze, kwestia voiceover). Czy możemy dziś zamknąć temat?</span>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Quiz 6 — poprawki po feedbacku Agnieszki.</strong> Zmiana treści pytania + kolejność pytań. Zamykamy w tym tygodniu. Zostają 2 quizy do zrobienia po akceptacji.</span>
+      </div>
+
+      <div class="alert warn">
+        <span class="icon">⚠️</span>
+        <span><strong>Plush — alokacja zasobów vs Plus.</strong> Kluczowy temat na H2: jak podzielić godziny między dwa branding? Mniej osób po stronie PLK wymaga ustalenia priorytetów.</span>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Raport 6-miesięczny — czerwiec 2026.</strong> Rafał przygotowuje. Zakres wg umowy: badanie 500 fraz w ChatGPT, porównanie vs baseline, ocena wdrożeń. Wartość: 4 000 PLN.</span>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Nowe infografiki — koncepcja AI-promptowania.</strong> Nowy styl: dymki chatu z Agentem AI zamiast tabel/punktów. Dagmara pokaże na spotkaniu. Potrzebujemy feedbacku od klienta.</span>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>SmartDom — wdrożenie po stronie PLK.</strong> Wytyczne i plan komunikacji FAQ dostarczone. Kiedy planujecie wdrożenie? (Ważne dla efektywności GEO.)</span>
+      </div>
+
+      <div class="alert info">
+        <span class="icon">ℹ️</span>
+        <span><strong>Światłowód — kontekst Tomka (poprzednie spotkanie).</strong> LP mają stabilną/rosnącą pozycję. Ruch jest, ale zainteresowanie marką Plus ogólnie spada — kontekst rynkowy, nie techniczny.</span>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Audit broken links.</strong> Analiza gotowa, zlecona na Jirę. Niektóre adresy poprawione (podwójne przekierowania wyeliminowane).</span>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Wytyczne prędkości ładowania.</strong> Dostarczone 8 czerwca. Wdrożenie po stronie PLK.</span>
+      </div>
+
+      <div class="alert ok">
+        <span class="icon">✅</span>
+        <span><strong>Weryfikacja dwuetapowa konta.</strong> Aga akceptuje temat pod warunkiem braku wskazania zewnętrznych aplikacji (np. Google Authenticator). Do potwierdzenia.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PLAN H2 -->
+  <div class="section">
+    <div class="section-title">Propozycje na kolejne pół roku — do omówienia</div>
+    <div class="highlight-box">
+      <strong>SEO techniczne:</strong> Audit wszystkich 3xx/4xx serwisu + wytyczne (propozycja Rafała, czerwiec — w ramach bieżących godzin)<br>
+      <strong>Prędkość ładowania:</strong> Wytyczne dla kolejnych podstron serwisu (do wyboru z klientem)<br>
+      <strong>Video:</strong> Plan produkcji pozostałych filmów po akceptacji nowego formatu<br>
+      <strong>GEO/LLM:</strong> Analiza bliskości semantycznej + weryfikacja rzetelności informacji (czerwiec)<br>
+      <strong>Plush:</strong> Finalizacja strategii SEO-contentowej + plan wdrożenia<br>
+      <strong>Raport 12-miesięczny:</strong> Grudzień 2026 — 4 000 PLN
+    </div>
+  </div>
+
+  <!-- ZESPÓŁ -->
+  <div class="section">
+    <div class="section-title">Zespół na spotkaniu</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">Project Manager</div>
+        <div class="name">Krystian Stefaniuk</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">SEO / GEO Specialist</div>
+        <div class="name">Rafał Kobylarczyk</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Content</div>
+        <div class="name">Dagmara Sagan</div>
+        <div class="side">Whites</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Koordynator SEO</div>
+        <div class="name">Aleksandra Sętorek</div>
+        <div class="side">Plus (organizatorka)</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Content / Quizy / Video</div>
+        <div class="name">Agnieszka Szymańska-Sikora</div>
+        <div class="side">Plus</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Blogi Plus i Plush</div>
+        <div class="name">Paulina Kotlarska</div>
+        <div class="side">Plus</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKTY -->
+  <div class="section">
+    <div class="section-title">Kontakty klienta</div>
+    <div class="contact-row">
+      <div class="contact-avatar">AŚ</div>
+      <div class="contact-info">
+        <div class="cname">Aleksandra Sętorek</div>
+        <div class="crole">Starszy Specjalista ds. Komunikacji Digitalowej — SEO, decyzje operacyjne</div>
+        <div class="cemail">aleksandra.setorek@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">AS</div>
+      <div class="contact-info">
+        <div class="cname">Agnieszka Szymańska-Sikora</div>
+        <div class="crole">Content, quizy, video — feedback do materiałów</div>
+        <div class="cemail">agnieszka.s.sikora@plus.pl</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-avatar">PK</div>
+      <div class="contact-info">
+        <div class="cname">Paulina Kotlarska</div>
+        <div class="crole">Blogi Plus i Plush, akcepty contentowe</div>
+        <div class="cemail">paulina.kotlarska@plus.pl</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZASOBY -->
+  <div class="section">
+    <div class="section-title">Kluczowe zasoby</div>
+    <div class="links-grid">
+      <a class="link-item" href="https://docs.google.com/spreadsheets/d/1ktRcsAEIGLyfUKh3yYMyZDstQ8Jtj81S" target="_blank">
+        <div class="link-icon">📊</div>
+        <div><div class="link-label">Tracker tekstów</div><div class="link-desc">Plan tekstów i działań Plus</div></div>
+      </a>
+      <a class="link-item" href="https://pl.wikipedia.org/wiki/Axians" target="_blank" style="display:none"></a>
+      <a class="link-item" href="https://agencjawhites.slack.com/archives/C08C4FDRYFR" target="_blank">
+        <div class="link-icon">💬</div>
+        <div><div class="link-label">Slack #plus_seo-cm</div><div class="link-desc">Kanał roboczy projektu</div></div>
+      </a>
+      <a class="link-item" href="https://agencjawhites.slack.com/archives/C0AUDLV7DTJ" target="_blank">
+        <div class="link-icon">📋</div>
+        <div><div class="link-label">Raport dzienny Plus</div><div class="link-desc">#plus-raport-claude</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">Wygenerowano: 9 czerwca 2026 · Whites Agency · brief na spotkanie Whites × Plus</div>
+
+</div>
+</body>
+</html>
